@@ -7,7 +7,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Lista'),),
+      appBar: AppBar(title: Text('Lista a termékekről'),),
       floatingActionButton: FloatingActionButton.extended(onPressed: (){}, label: Text('Tovább')),
     );
   }
