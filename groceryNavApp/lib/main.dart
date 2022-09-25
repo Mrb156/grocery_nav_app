@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_nav_app/screens/home.dart';
+import 'package:grocery_nav_app/screens/nav.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,12 +11,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.orange,
         useMaterial3: true,
+        
       ),
-      home: const Home(),
+      home:  Navigation(),
     );
   }
 }

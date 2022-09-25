@@ -90,7 +90,7 @@ int main()
     floydWarshall(graph);
     vector<int> list = {0, 1, 5, 3, 6, 8, 19, 14, 23, 17, 11};
     vector<int> order = {};
-    vector<int> path = {};
+    vector<int> path2 = {};
     int min = INF;
     int minIndex = 0;
     int next = 0;
@@ -122,5 +122,22 @@ int main()
     {
         dijkstra(graph, order[i-1], order[i]);
     };
-    //git teszt
+    cout<<endl;
+
+    for (int i = 0; i < path.size(); i++)
+    {
+        if(i != path.size() && path[i] == path[i+1]){
+            path.erase(path.begin()+i);
+        }
+        if (i!=path.size())
+        {
+            
+            cout<<path[i]<< " + ";
+        }
+        else{
+            cout<<path[i]<<endl;
+        }
+        
+    }
+    
 }
