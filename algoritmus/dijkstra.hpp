@@ -27,7 +27,7 @@ void printPath(int currentVertex, vector<int> parents)
 void printSolution(vector<int> parents, int vertexIndex)
 {	
 	printPath(vertexIndex, parents);
-	cout << "+";
+	cout << "+ ";
 }
 
 
