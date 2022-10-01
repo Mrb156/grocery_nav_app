@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         
       ),
-      home:  Navigation(),
+      home:  Navigation(wishList:const [0, 1, 5, 3, 6, 8, 19, 14, 23, 9, 2, 11]),
     );
   }
 }

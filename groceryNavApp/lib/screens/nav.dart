@@ -1,11 +1,11 @@
 import 'package:arrow_path/arrow_path.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_nav_app/pathFindingAlgorithm/pathFinding.dart';
 
 const double WIDTH = 2000;
 const int n = 24;
 
-List<int> wishList = [0, 1, 19, 4, 8, 13, 23];
-List<int> road = [0, 1, 19, 1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 9, 22, 23];
+List<int> road = [];
 
 class Node {
   double x;
@@ -23,10 +23,6 @@ class Node {
 List<Node> nodes = [];
 
 void generate() {
-  // for (int i = 0; i < n; i++) {
-  //   nodes.add(Node(x: i + 1, y: i + 100, id: i));
-  // }
-
   //w=411.4 h=700
   nodes.add(Node(x: 185, y: 650, id: 0));
 
@@ -64,19 +60,9 @@ void generate() {
   nodes.add(Node(x: 300, y: 100, id: 23));
 }
 
-void visibility() {
-  for (var i = 0; i < wishList.length; i++) {
-    for (var j = 0; j < nodes.length; j++) {
-      if (wishList[i] == nodes[j].id) {
-        nodes[j].visible = true;
-        break;
-      }
-    }
-  }
-}
-
 class Navigation extends StatefulWidget {
-  Navigation({Key? key}) : super(key: key);
+  List<int> wishList = [];
+  Navigation({Key? key, required this.wishList}) : super(key: key);
 
   @override
   _NavigationState createState() => _NavigationState();
@@ -85,13 +71,31 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   bool showArrows = true;
 
+  void visibility() {
+    for (var i = 0; i < widget.wishList.length; i++) {
+      for (var j = 0; j < nodes.length; j++) {
+        if (widget.wishList[i] == nodes[j].id) {
+          nodes[j].visible = true;
+          break;
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     generate();
     visibility();
+    road = generatePath(widget.wishList);
     return Scaffold(
       appBar: AppBar(title: const Text("Navigation")),
-      body: InteractiveViewer(child: const Grid()),
+      body: Builder(builder: (context) {
+        if (road.isEmpty) {
+          return CircularProgressIndicator();
+        } else {
+          return InteractiveViewer(child: const Grid());
+        }
+      }),
     );
   }
 }
@@ -139,10 +143,14 @@ class Element extends StatelessWidget {
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: visible ? Colors.amber : Color.fromARGB(108, 96, 157, 255),
-        shape: BoxShape.circle,
+        color: visible ? Colors.amber : Color.fromARGB(32, 0, 0, 0),
+        shape: BoxShape.rectangle,
       ),
-      child: Center(child: Text(id.toString())),
+      child: Center(
+          child: Text(
+        id.toString(),
+        style: TextStyle(color: visible ? Colors.black : Color.fromARGB(73, 0, 0, 0)),
+      )),
     );
   }
 }
@@ -158,12 +166,14 @@ class ArrowPainter extends CustomPainter {
       ..strokeWidth = 3.0;
     {
       Path path = Path();
-      path.moveTo(nodes[0].x + 15, nodes[0].y + 15);
+      path.moveTo(nodes[0].x , nodes[0].y);
       for (int i = 1; i < road.length; i++) {
         for (int j = 0; j < n; j++) {
           if (nodes[j].id == road[i]) {
-            path.lineTo(nodes[j].x + 15, nodes[j].y + 15);
-            path = ArrowPath.make(path: path);
+            path.lineTo(nodes[j].x, nodes[j].y);
+            if (nodes[j].visible) {
+              path = ArrowPath.make(path: path);
+            }
           }
         }
       }

@@ -109,6 +109,11 @@ void dijkstra(int adjacencyMatrix[nV][nV], int startVertex, int destination)
 			}
 		}
 	}
+	for (int i = 0; i < parents.size(); i++)
+	{
+		cout<<parents[i]<<" ";
+	}
+	
 	
 	printSolution(parents, destination);
 	
