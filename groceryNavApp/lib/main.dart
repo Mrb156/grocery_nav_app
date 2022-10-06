@@ -16,9 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
         useMaterial3: true,
-        
       ),
-      home:  Navigation(wishList:const [0, 1, 5, 3, 6, 8, 19, 14, 23, 9, 2, 11]),
+      home: Navigation(const [1, 5, 3, 6, 8, 19, 14, 9, 2, 11]),
     );
   }
 }
