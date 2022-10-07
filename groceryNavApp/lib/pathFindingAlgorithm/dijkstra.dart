@@ -1,6 +1,6 @@
 const int NO_PARENT = -1;
 const int nV = 24;
-const int INF = 999;
+const double INF = 999;
 
 List<int> road = [];
 
@@ -17,10 +17,10 @@ void printSolution(List<int> parents, int vertexIndex) {
 }
 
 void dijkstra(
-    List<List<int>> adjacencyMatrix, int startVertex, int destination) {
+    List<List<double>> adjacencyMatrix, int startVertex, int destination) {
   int nVertices = nV;
 
-  List<int> shortestDistances = [];
+  List<double> shortestDistances = [];
 
   List<bool> added = [];
 
@@ -43,7 +43,7 @@ void dijkstra(
 
   for (var i = 1; i < nVertices; i++) {
     int nearestVertex = -1;
-    int shortestDistance = 2147483647;
+    double shortestDistance = 2147483647;
 
     for (int vertexIndex = 0; vertexIndex < nVertices; vertexIndex++) {
       if (!added[vertexIndex] &&
@@ -56,7 +56,7 @@ void dijkstra(
     added[nearestVertex] = true;
 
     for (int vertexIndex = 0; vertexIndex < nVertices; vertexIndex++) {
-      int edgeDistance = adjacencyMatrix[nearestVertex][vertexIndex];
+      double edgeDistance = adjacencyMatrix[nearestVertex][vertexIndex];
 
       if (edgeDistance > 0 &&
           ((shortestDistance + edgeDistance) <

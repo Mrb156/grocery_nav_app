@@ -1,16 +1,18 @@
+import 'dart:io';
+
 import 'dijkstra.dart';
 
 const int nV = 24;
 
-const int INF = 999;
+const double INF = 999;
 
-List<List<int>> d_matrix =
+List<List<double>> d_matrix =
     List.generate(nV, (i) => List.generate(nV, (j) => 0));
 
-void floydWarshall(List<List<int>> graph) {
-  List<List<int>> matrix =
+void floydWarshall(List<List<double>> d_graph) {
+  List<List<double>> matrix =
       List.generate(nV, (i) => List.generate(nV, (j) => 0));
-  ;
+  
   int i, j, k;
 
   for (i = 0; i < nV; i++) {
@@ -31,26 +33,35 @@ void floydWarshall(List<List<int>> graph) {
   }
   for (i = 0; i < nV; i++) {
     for (j = 0; j < nV; j++) {
-      d_matrix[i][j] = matrix[i][j];
+      d_graph[i][j] = matrix[i][j];
       // d_matrix = matrix;
     }
   }
   //printMatrix(matrix);
 }
 
-void printMatrix(List<List<int>> matrix) {
+double calcDistance(order) {
+    double sum = 0.0;
+    for (var i = 0; i < order.length - 1; i++) {
+      double d = d_matrix[order[i]][order[i + 1]];
+      sum += d;
+    }
+    return sum;
+  }
+
+void printMatrix(List<List<double>> matrix) {
   for (int i = 0; i < nV; i++) {
     for (int j = 0; j < nV; j++) {
       if (matrix[i][j] == INF)
-        print("INF");
+        stdout.write("INF");
       else
-        print(matrix[i][j].toString());
+        stdout.write(matrix[i][j].toString() + " ");
     }
-    print("\n");
+    stdout.write("\n");
   }
 }
 
-List<List<int>> graph = [
+List<List<double>> graph = [
   [
     0,
     11,
@@ -678,15 +689,15 @@ List<List<int>> graph = [
 ];
 
 List<int> generatePath(List<int> wishList) {
-  floydWarshall(graph);
+  floydWarshall(d_matrix);
 
   List<int> list = wishList;
   List<int> order = [];
   List<int> path = [];
-  int min = INF;
+  double min = INF;
   int minIndex = 0;
   int next = 0;
-  int ut = 0;
+  double ut = 0;
 
   for (int i = 0; i < list.length; i++) {
     for (int j = 0; j < nV; j++) {
@@ -709,5 +720,14 @@ List<int> generatePath(List<int> wishList) {
       road.remove(road[i]);
     }
   }
+  print(ut);
+  print(order);
   return road;
+}
+void main(){
+  //[0, 19, 1, 2, 3, 5, 9, 14, 15, 8, 6, 11, 23]
+  
+  List<int> path = [0, 1, 3, 2, 19, 8, 6, 5, 11, 14, 15, 9, 23];
+generatePath(path);
+print(calcDistance(path));
 }
