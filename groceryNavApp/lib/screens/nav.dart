@@ -1,32 +1,17 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:arrow_path/arrow_path.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_nav_app/pathFindingAlgorithm/ant_colony.dart';
-import 'package:grocery_nav_app/pathFindingAlgorithm/dijkstra.dart';
+import 'package:grocery_nav_app/models/models.dart';
 import 'package:grocery_nav_app/pathFindingAlgorithm/pathFinding.dart';
 import 'dart:math';
-import 'package:darwin/darwin.dart';
 
 int n = 12;
 const double infinity = 1.0 / 0.0;
 int totalnodes = n;
 var recordDistance = infinity;
 ValueNotifier<List<int>> road = ValueNotifier<List<int>>([]);
-
-class Node {
-  double x;
-  double y;
-  int id;
-  bool visible;
-
-  Node(
-      {required this.x,
-      required this.y,
-      required this.id,
-      this.visible = false});
-}
+String done = 'Navigation - Az útvonal számítása folyamatban van';
 
 List<Node> nodes = [];
 List<Node> pathNodes = [];
@@ -176,7 +161,7 @@ class _NavigationState extends State<Navigation> {
       if (d < recordDistance) {
         recordDistance = d;
         road.value = List.from(population[i]);
-        print(recordDistance);
+        //print(recordDistance);
         print(road.value);
       }
       fitness[i] = (1 / (d + 1));
@@ -208,15 +193,17 @@ class _NavigationState extends State<Navigation> {
     for (var i = 0; i < totalnodes; i++) {
       if (Random().nextDouble() < mutationRate) {
         var indexA = Random().nextInt(order.length - 2) + 1.floor();
-        var indexB = (indexA+1)%totalnodes;
+        // var indexB = Random().nextInt(order.length - 2) + 1.floor();
+        var indexB = indexA % totalnodes;
         swap(order, indexA, indexB);
       }
     }
   }
 
   crossOver(List<int> orderA, List<int> orderB) {
-    var start = Random().nextInt(orderA.length-2)+1.floor();
-    var end = Random().nextInt(orderA.length-(start)-1) + (start + 1).floor();
+    var start = Random().nextInt(orderA.length - 2) + 1.floor();
+    var end =
+        Random().nextInt(orderA.length - (start) - 1) + (start + 1).floor();
     var newOrder = orderA.sublist(start, end);
 
     for (var i = 0; i < orderB.length; i++) {
@@ -239,6 +226,7 @@ class _NavigationState extends State<Navigation> {
     }
     population = newPopulation;
   }
+
   var roadTest = road.value;
 
   //TODO: Dijkstra, vagy valamilyen másik algoritmussal kiszámolni az útvonalat két pont között, és azt kirajzolni
@@ -248,8 +236,7 @@ class _NavigationState extends State<Navigation> {
     nextGeneration();
     if (roadTest == road.value) {
       counter++;
-    }
-    else{
+    } else {
       roadTest = road.value;
       counter = 0;
     }
@@ -264,14 +251,19 @@ class _NavigationState extends State<Navigation> {
     super.initState();
     //TODO: valamilyen future-rel, és egy providerrel kell elvégezni a számításokat egy külön fájlban,
     //hogy egy progressindicator jelezze mikor készül el az útvonal
-    timer =
-        Timer.periodic(const Duration(microseconds: 1), (Timer t) {
-          ossz();
-          if (counter >= 10000) {
-            timer?.cancel();
-            print("end");
-          }
+    timer = Timer.periodic(const Duration(microseconds: 1), (Timer t) {
+      ossz();
+      if (counter >= 10000) {
+        var road2 = getFinalRoute(road.value);
+        road.value = List.from(road2);
+        timer?.cancel();
+        setState(() {
+          done = 'Navigation - Done!';
+          print(road.value);
         });
+        print("end");
+      }
+    });
   }
 
   @override
@@ -283,7 +275,7 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Navigation"), actions: <Widget>[
+      appBar: AppBar(title: Text(done), actions: <Widget>[
         Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
@@ -388,13 +380,20 @@ class ArrowPainter extends CustomPainter {
       arrow.moveTo(nodes[road.value[0]].x, nodes[road.value[0]].y);
 
       for (var i = 1; i < road.value.length; i++) {
-        for (var j = 0; j < pathNodes.length; j++) {
-          if (road.value[i] == pathNodes[j].id) {
-            arrow.lineTo(pathNodes[j].x, pathNodes[j].y);
+        for (var j = 0; j < nodes.length; j++) {
+          if (road.value[i] == nodes[j].id) {
+            arrow.lineTo(nodes[j].x, nodes[j].y);
             break;
           }
         }
+        // for (var m = 0; m < pathNodes.length; m++) {
+        //   if (road.value[i] == pathNodes[m].id) {
+        //     arrow = ArrowPath.make(path: arrow);
+        //   }
+        // }
       }
+      arrow = ArrowPath.make(path: arrow);
+
       canvas.drawPath(arrow, paint..color = Color.fromARGB(255, 0, 0, 0));
     }
   }

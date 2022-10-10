@@ -12,7 +12,7 @@ List<List<double>> d_matrix =
 void floydWarshall(List<List<double>> d_graph) {
   List<List<double>> matrix =
       List.generate(nV, (i) => List.generate(nV, (j) => 0));
-  
+
   int i, j, k;
 
   for (i = 0; i < nV; i++) {
@@ -41,13 +41,13 @@ void floydWarshall(List<List<double>> d_graph) {
 }
 
 double calcDistance(order) {
-    double sum = 0.0;
-    for (var i = 0; i < order.length - 1; i++) {
-      double d = d_matrix[order[i]][order[i + 1]];
-      sum += d;
-    }
-    return sum;
+  double sum = 0.0;
+  for (var i = 0; i < order.length - 1; i++) {
+    double d = d_matrix[order[i]][order[i + 1]];
+    sum += d;
   }
+  return sum;
+}
 
 void printMatrix(List<List<double>> matrix) {
   for (int i = 0; i < nV; i++) {
@@ -721,13 +721,28 @@ List<int> generatePath(List<int> wishList) {
     }
   }
   print(ut);
-  print(order);
+  print(road);
   return road;
 }
-void main(){
+
+List<int> getFinalRoute(order) {
+  //List<int> road = [];
+  for (int i = 1; i < order.length; i++) {
+    dijkstra(graph, order[i - 1], order[i]);
+  }
+
+  for (int i = 1; i < road.length; i++) {
+    if (i != road.length - 1 && road[i] == road[i + 1]) {
+      road.remove(road[i]);
+    }
+  }
+  return road;
+}
+
+void main() {
   //[0, 19, 1, 2, 3, 5, 9, 14, 15, 8, 6, 11, 23]
-  
+
   List<int> path = [0, 1, 3, 2, 19, 8, 6, 5, 11, 14, 15, 9, 23];
-generatePath(path);
-print(calcDistance(path));
+  generatePath(path);
+  print(calcDistance(path));
 }
