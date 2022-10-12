@@ -1,23 +1,36 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:grocery_nav_app/screens/home.dart';
 import 'package:grocery_nav_app/screens/nav.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  List<int> list = [19, 23, 16,10,15, 5,6,4,12,3,2,10,15];
+  void generate() {
+    for (var i = 0; i < 23; i++) {
+      var num = Random().nextInt(22) + 1;
+      if (!list.contains(num) && num != 21) {
+        list.add(num);
+      }
+    }
+  }
+
+  MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    generate();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: Colors.amber,
         useMaterial3: true,
       ),
-      home: Navigation(const [1, 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]),
+      home: Navigation(list),
     );
   }
 }
