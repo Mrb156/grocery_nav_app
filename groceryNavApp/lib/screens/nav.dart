@@ -74,7 +74,7 @@ class _NavigationState extends State<Navigation> {
   bool showArrows = true;
   var random = Random();
   int startNode = 0;
-  int endNode = 21;
+  int endNode = 23;
 
   int popTotal = (99 / (1 / totalnodes) / 10).floor();
   int counter = 0;

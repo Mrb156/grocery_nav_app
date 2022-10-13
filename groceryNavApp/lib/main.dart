@@ -9,12 +9,12 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  List<int> list = [19, 23, 16,10,15, 5,6,4,12,3,2,10,15];
+  List<int> list = [19, 23, 16];
   void generate() {
-    for (var i = 0; i < 23; i++) {
+    for (var i = 1; i < 23; i++) {
+        list.add(i);
       var num = Random().nextInt(22) + 1;
       if (!list.contains(num) && num != 21) {
-        list.add(num);
       }
     }
   }
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    generate();
+    //generate();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
