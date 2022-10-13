@@ -5,12 +5,6 @@ using namespace std;
 #include <algorithm>
 #include "limits.h"
 
-// A Java program for Dijkstra's
-// single source shortest path
-// algorithm. The program is for
-// adjacency matrix representation
-// of the graph.
-
 int NO_PARENT = -1;
 #define nV 24
 #define INF 999
@@ -18,33 +12,24 @@ int NO_PARENT = -1;
 // Function to print shortest path
 // from source to currentVertex
 // using parents array
+vector<int> path;
 void printPath(int currentVertex, vector<int> parents)
 {
-
-	// Base case : Source node has
-	// been processed
 	if (currentVertex == NO_PARENT)
 	{
 		return;
 	}
 	printPath(parents[currentVertex], parents);
 	cout << currentVertex << " ";
+	path.push_back(currentVertex);
 }
 
-// A utility function to print
-// the constructed distances
-// array and shortest paths
-void printSolution(int startVertex, vector<int> parents, int vertexIndex)
+void printSolution(vector<int> parents, int vertexIndex)
 {	
 	printPath(vertexIndex, parents);
-	cout << "+";
+	cout << "+ ";
 }
 
-// Function that implements Dijkstra's
-// single source shortest path
-// algorithm for a graph represented
-// using adjacency matrix
-// representation
 
 void dijkstra(int adjacencyMatrix[nV][nV], int startVertex, int destination)
 {
@@ -124,6 +109,12 @@ void dijkstra(int adjacencyMatrix[nV][nV], int startVertex, int destination)
 			}
 		}
 	}
+	for (int i = 0; i < parents.size(); i++)
+	{
+		cout<<parents[i]<<" ";
+	}
 	
-	printSolution(startVertex, parents, destination);
+	
+	printSolution(parents, destination);
+	
 }
