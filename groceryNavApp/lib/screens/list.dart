@@ -26,11 +26,15 @@ class Lista extends StatefulWidget {
   State<Lista> createState() => _ListaState();
 }
 
-bool isChecked = false;
+List<bool> userChecked = [];
 
 class _ListaState extends State<Lista> {
   @override
   Widget build(BuildContext context) {
+    for (var i = 0; i < termekek.length; i++) {
+      userChecked.add(false);
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: const Center(child: Text('Lista')),
@@ -40,16 +44,17 @@ class _ListaState extends State<Lista> {
           itemCount: termekek.length,
           itemBuilder: (BuildContext context, int index) {
             return CheckboxListTile(
-                tileColor: Colors.amber[700],
-                isThreeLine: true,
+                tileColor: Colors.amber[400],
+                checkColor: Colors.green[600],
+                activeColor: Colors.green[100],
                 title: Text(termekek[index].name +
                     '    ' +
                     termekek[index].price.toString() +
                     'Ft'),
-                value: isChecked,
+                value: userChecked[index],
                 onChanged: (bool? value) {
                   setState(() {
-                    value = !isChecked;
+                    userChecked[index] = value!;
                   });
                 });
           },
