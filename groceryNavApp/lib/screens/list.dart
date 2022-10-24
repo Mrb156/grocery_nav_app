@@ -31,6 +31,18 @@ bool isChecked = false;
 class _ListaState extends State<Lista> {
   @override
   Widget build(BuildContext context) {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return Colors.blue;
+      }
+      return Colors.red;
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: const Center(child: Text('Lista')),
@@ -39,20 +51,26 @@ class _ListaState extends State<Lista> {
         body: ListView.builder(
           itemCount: termekek.length,
           itemBuilder: (BuildContext context, int index) {
-            return CheckboxListTile(
-                tileColor: Colors.amber[700],
-                isThreeLine: true,
-                title: Text(termekek[index].name +
-                    '    ' +
-                    termekek[index].price.toString() +
-                    'Ft'),
+            return ListTile(
+              title: Text(termekek[index].name +
+                  '    ' +
+                  termekek[index].price.toString() +
+                  'Ft'),
+              trailing: Checkbox(
                 value: isChecked,
+                fillColor: MaterialStateProperty.resolveWith(getColor),
                 onChanged: (bool? value) {
                   setState(() {
-                    value = !isChecked;
+                    isChecked = value!;
                   });
-                });
+                },
+              ),
+            );
           },
         ));
   }
 }
+/*Text(termekek[index].name +
+                    '    ' +
+                    termekek[index].price.toString() +
+                    'Ft')*/
