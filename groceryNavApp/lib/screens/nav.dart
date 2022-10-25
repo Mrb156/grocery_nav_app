@@ -78,6 +78,7 @@ class _NavigationState extends State<Navigation> {
 
   int popTotal = (99 / (1 / totalnodes) / 10).floor();
   int counter = 0;
+  int counterNumber = 100;
   List<List<int>> population = [];
   List<int> order = [];
   List<double> fitness = [];
@@ -95,13 +96,6 @@ class _NavigationState extends State<Navigation> {
       }
     }
   }
-
-  int popTotal = 5000;
-  int counterNumber = 100;
-  int counter = 0;
-  List<List<int>> population = [];
-  List<int> order = [];
-  List<double> fitness = [];
 
   List<List<double>> d_matrix =
       List.generate(24, (i) => List.generate(24, (j) => 0));
