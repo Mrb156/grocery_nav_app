@@ -6,11 +6,11 @@ import 'package:grocery_nav_app/models/models.dart';
 import 'package:grocery_nav_app/pathFindingAlgorithm/pathFinding.dart';
 import 'dart:math';
 
-int n = 12;
 const double infinity = 1.0 / 0.0;
-int totalnodes = n;
+int totalnodes = 0;
 var recordDistance = infinity;
 ValueNotifier<List<int>> road = ValueNotifier<List<int>>([]);
+ValueNotifier<List<int>> roadFlow = ValueNotifier<List<int>>([]);
 String done = 'Navigation - Az útvonal számítása folyamatban van';
 
 List<Node> nodes = [];
@@ -55,7 +55,7 @@ void generate() {
 
   // for (int i = 0; i < totalnodes; i++) {
   //   nodes.add(Node(
-  //       id: i, x: Random().nextDouble() * 380, y: Random().nextDouble() * 690));
+  //       id: i, x: random.nextDouble() * 380, y: random.nextDouble() * 690));
   // }
 }
 
@@ -63,7 +63,7 @@ class Navigation extends StatefulWidget {
   List<int> wishList = [];
   Navigation(this.wishList) {
     wishList = wishList;
-    n = wishList.length;
+    totalnodes = wishList.length;
   }
 
   @override
@@ -72,6 +72,18 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   bool showArrows = true;
+  var random = Random();
+  int startNode = 0;
+  int endNode = 23;
+
+  int popTotal = (99 / (1 / totalnodes) / 10).floor();
+  int counter = 0;
+  List<List<int>> population = [];
+  List<int> order = [];
+  List<double> fitness = [];
+  var roadTest = road.value;
+  int maxWait = (999 / (1 / totalnodes)).floor();
+  //int maxWait = 1000;
 
   void visibility() {
     for (var i = 0; i < widget.wishList.length; i++) {
@@ -101,9 +113,7 @@ class _NavigationState extends State<Navigation> {
   }
 
   void shuffle(List<int> array) {
-    var random = Random();
-
-    for (int i = 0; i < array.length - 1; i++) {
+    for (int i = 1; i < array.length - 1; i++) {
       var n = random.nextInt(i + 1);
       var temp = array[i];
       array[i] = array[n];
@@ -121,6 +131,8 @@ class _NavigationState extends State<Navigation> {
   }
 
   void setup() {
+    totalnodes = widget.wishList.length + 2;
+    visibility();
     floydWarshall(d_matrix);
     for (var i = 0; i < widget.wishList.length; i++) {
       for (var j = 0; j < nodes.length; j++) {
@@ -129,7 +141,7 @@ class _NavigationState extends State<Navigation> {
         }
       }
     }
-    pathNodes.add(nodes[23]);
+    pathNodes.add(nodes[endNode]);
     for (int i = 0; i < widget.wishList.length; i++) {
       order.add(widget.wishList[i]);
     }
@@ -138,11 +150,11 @@ class _NavigationState extends State<Navigation> {
       List<int> pop2 = [];
       population.add(order.toList());
       population[i].shuffle();
-      pop2.add(0);
+      pop2.add(startNode);
       for (int j = 0; j < population[i].length; j++) {
         pop2.add(population[i][j]);
       }
-      pop2.add(23);
+      pop2.add(endNode);
       population[i] = pop2;
     }
 
@@ -151,6 +163,7 @@ class _NavigationState extends State<Navigation> {
       if (d < recordDistance) {
         recordDistance = d;
         road.value = population[i];
+        roadFlow.value = population[i];
       }
       fitness.add(d);
     }
@@ -162,10 +175,15 @@ class _NavigationState extends State<Navigation> {
       if (d < recordDistance) {
         recordDistance = d;
         road.value = List.from(population[i]);
-        //print(recordDistance);
+
         print(road.value);
+        print(recordDistance);
       }
       fitness[i] = (1 / (d + 1));
+
+      if (random.nextDouble() >= 0.5) {
+        roadFlow.value = List.from(population[i]);
+      }
     }
   }
 
@@ -181,7 +199,7 @@ class _NavigationState extends State<Navigation> {
 
   List<int> pickOne(list, prob) {
     int index = 0;
-    var r = Random().nextDouble();
+    var r = random.nextDouble();
     while (r > 0) {
       r = r - prob[index];
       index++;
@@ -192,9 +210,8 @@ class _NavigationState extends State<Navigation> {
 
   void mutate(order, mutationRate) {
     for (var i = 0; i < totalnodes; i++) {
-      if (Random().nextDouble() < mutationRate) {
-        var indexA = Random().nextInt(order.length - 2) + 1.floor();
-        // var indexB = Random().nextInt(order.length - 2) + 1.floor();
+      if (random.nextDouble() < mutationRate) {
+        var indexA = random.nextInt(order.length - 2) + 1.floor();
         var indexB = indexA % totalnodes;
         swap(order, indexA, indexB);
       }
@@ -202,17 +219,21 @@ class _NavigationState extends State<Navigation> {
   }
 
   crossOver(List<int> orderA, List<int> orderB) {
-    var start = Random().nextInt(orderA.length - 2) + 1.floor();
-    var end =
-        Random().nextInt(orderA.length - (start) - 1) + (start + 1).floor();
+    var start = random.nextInt(orderA.length - 2) + 1.floor();
+    var end = random.nextInt(orderA.length - (start) - 1) + (start + 1).floor();
     var newOrder = orderA.sublist(start, end);
 
     for (var i = 0; i < orderB.length; i++) {
       var node = orderB[i];
       if (!newOrder.contains(node)) {
         newOrder.add(node);
+        if (node == startNode) {
+          newOrder.remove(startNode);
+          newOrder[0] = startNode;
+        }
       }
     }
+
     return newOrder;
   }
 
@@ -228,9 +249,6 @@ class _NavigationState extends State<Navigation> {
     population = newPopulation;
   }
 
-  var roadTest = road.value;
-
-  //TODO: Dijkstra, vagy valamilyen másik algoritmussal kiszámolni az útvonalat két pont között, és azt kirajzolni
   void ossz() {
     calcFitness();
     normalizeFitness();
@@ -250,8 +268,7 @@ class _NavigationState extends State<Navigation> {
     generate();
     setup();
     super.initState();
-    //TODO: valamilyen future-rel, és egy providerrel kell elvégezni a számításokat egy külön fájlban,
-    //hogy egy progressindicator jelezze mikor készül el az útvonal
+
     timer = Timer.periodic(const Duration(microseconds: 1), (Timer t) {
       ossz();
       if (counter >= counterNumber) {
@@ -259,8 +276,9 @@ class _NavigationState extends State<Navigation> {
         road.value = List.from(road2);
         timer?.cancel();
         setState(() {
-          done = 'Navigation - Done!';
-          print(road.value);
+          done = 'Navigation - Kész!';
+          // print(road.value);
+          roadFlow = road;
         });
         print("end");
       }
@@ -290,12 +308,12 @@ class _NavigationState extends State<Navigation> {
             )),
       ]),
       body: ValueListenableBuilder(
-        valueListenable: road,
+        valueListenable: roadFlow,
         builder: (context, List<int> road, child) {
           return InteractiveViewer(
             child: Grid(
-                //road: road,
-                ),
+              road: road,
+            ),
           );
         },
       ),
@@ -304,9 +322,10 @@ class _NavigationState extends State<Navigation> {
 }
 
 class Grid extends StatelessWidget {
-  //List<int> road;
+  List<int> road;
   Grid({
     super.key,
+    required this.road,
   });
 
   @override
@@ -342,8 +361,8 @@ class Grid extends StatelessWidget {
           size: Size(MediaQuery.of(context).size.width,
               MediaQuery.of(context).size.height),
           painter: ArrowPainter(
-              //path: road,
-              ),
+            path: road,
+          ),
         ),
       ],
     );
@@ -376,8 +395,10 @@ class Element extends StatelessWidget {
 }
 
 class ArrowPainter extends CustomPainter {
-  //List<int> path;
-  // ArrowPainter({required this.path,});
+  List<int> path;
+  ArrowPainter({
+    required this.path,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -389,11 +410,11 @@ class ArrowPainter extends CustomPainter {
       ..strokeWidth = 3.0;
     {
       Path arrow = Path();
-      arrow.moveTo(nodes[road.value[0]].x, nodes[road.value[0]].y);
+      arrow.moveTo(nodes[path[0]].x, nodes[path[0]].y);
 
-      for (var i = 1; i < road.value.length; i++) {
+      for (var i = 1; i < path.length; i++) {
         for (var j = 0; j < nodes.length; j++) {
-          if (road.value[i] == nodes[j].id) {
+          if (path[i] == nodes[j].id) {
             arrow.lineTo(nodes[j].x, nodes[j].y);
             break;
           }

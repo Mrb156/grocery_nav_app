@@ -10,3 +10,7 @@ class Node {
       required this.id,
       this.visible = false});
 }
+
+class Products{
+
+}
