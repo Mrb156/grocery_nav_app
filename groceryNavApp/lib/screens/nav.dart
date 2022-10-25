@@ -84,7 +84,8 @@ class _NavigationState extends State<Navigation> {
     }
   }
 
-  int popTotal = 999;
+  int popTotal = 5000;
+  int counterNumber = 100;
   int counter = 0;
   List<List<int>> population = [];
   List<int> order = [];
@@ -253,7 +254,7 @@ class _NavigationState extends State<Navigation> {
     //hogy egy progressindicator jelezze mikor készül el az útvonal
     timer = Timer.periodic(const Duration(microseconds: 1), (Timer t) {
       ossz();
-      if (counter >= 10000) {
+      if (counter >= counterNumber) {
         var road2 = getFinalRoute(road.value);
         road.value = List.from(road2);
         timer?.cancel();
@@ -312,6 +313,17 @@ class Grid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(
+                      "assets/images/Screenshot_floor_plan_sample.jpg"),
+                  fit: BoxFit.fitWidth),
+            ),
+          ),
+        ),
         Stack(
           children: List.generate(
             nodes.length,
