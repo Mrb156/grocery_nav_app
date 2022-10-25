@@ -6,6 +6,8 @@ import 'package:grocery_nav_app/models/models.dart';
 import 'package:grocery_nav_app/pathFindingAlgorithm/pathFinding.dart';
 import 'dart:math';
 
+import 'package:transparent_pointer/transparent_pointer.dart';
+
 const double infinity = 1.0 / 0.0;
 int totalnodes = 0;
 var recordDistance = infinity;
@@ -337,6 +339,15 @@ class Grid extends StatelessWidget {
             ),
           ),
         ),
+        GestureDetector(
+          child: CustomPaint(
+            size: Size(MediaQuery.of(context).size.width,
+                MediaQuery.of(context).size.height),
+            painter: ArrowPainter(
+              path: road,
+            ),
+          ),
+        ),
         Stack(
           children: List.generate(
             nodes.length,
@@ -349,13 +360,6 @@ class Grid extends StatelessWidget {
                 ),
               );
             },
-          ),
-        ),
-        CustomPaint(
-          size: Size(MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height),
-          painter: ArrowPainter(
-            path: road,
           ),
         ),
       ],
@@ -372,8 +376,8 @@ class Element extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 20,
-      height: 20,
+      width: 40,
+      height: 40,
       decoration: BoxDecoration(
         color: visible ? Colors.amber : Color.fromARGB(32, 0, 0, 0),
         shape: BoxShape.circle,
