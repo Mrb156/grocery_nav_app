@@ -1,5 +1,5 @@
 //import 'dart:html';
-
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_nav_app/models/models.dart';
 
@@ -27,37 +27,109 @@ class Lista extends StatefulWidget {
 }
 
 List<bool> userChecked = [];
+List<int> db = [];
+int osszeg = 0;
+List<int> preOsszeg = [];
+int szamlalo = 0;
+
+void decrement(int szam) {
+  if (szam > 0) {
+    szam = szam - 1;
+  }
+}
+
+void increment(int szam) {
+  szam = szam + 1;
+}
 
 class _ListaState extends State<Lista> {
   @override
   Widget build(BuildContext context) {
     for (var i = 0; i < termekek.length; i++) {
       userChecked.add(false);
+      db.add(0);
+      preOsszeg.add(0);
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Text('Lista')),
-          backgroundColor: const Color.fromRGBO(89, 76, 34, 1.0),
+      backgroundColor: Colors.blue[100],
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Lista'),
+            Text('A lista összege: ' + osszeg.toString() + 'Ft')
+          ],
         ),
-        body: ListView.builder(
-          itemCount: termekek.length,
-          itemBuilder: (BuildContext context, int index) {
-            return CheckboxListTile(
-                tileColor: Colors.amber[400],
-                checkColor: Colors.green[600],
-                activeColor: Colors.green[100],
-                title: Text(termekek[index].name +
-                    '    ' +
-                    termekek[index].price.toString() +
-                    'Ft'),
+        foregroundColor: Colors.amber[300],
+        shadowColor: Colors.blue,
+        backgroundColor: Colors.blue[300],
+      ),
+      body: ListView.builder(
+        itemCount: termekek.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ExpansionTileCard(
+            initialPadding: EdgeInsets.all(12.0),
+            expandedColor: Colors.amber[500],
+            expandedTextColor: Colors.black87,
+            baseColor: Colors.amber[300],
+            subtitle: Text(termekek[index].price.toString() + ' Ft'),
+            trailing: Checkbox(
                 value: userChecked[index],
                 onChanged: (bool? value) {
                   setState(() {
                     userChecked[index] = value!;
+                    if (userChecked[index] == true) {
+                      db[index] = 1;
+                      osszeg = osszeg + termekek[index].price * 1;
+                      preOsszeg[index] = termekek[index].price * 1;
+                    } else if (userChecked[index] == false) {
+                      db[index] = 0;
+                      osszeg = osszeg - preOsszeg[index];
+                    }
                   });
-                });
-          },
-        ));
+                }),
+            title: Text(termekek[index].name),
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          if (db[index] <= 0) {
+                          } else {
+                            db[index]--;
+                            osszeg = osszeg - termekek[index].price;
+                          }
+                        });
+                      },
+                      child: const Icon(Icons.remove)),
+                  Text(
+                    db[index].toString(),
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          db[index]++;
+                          osszeg = osszeg + termekek[index].price;
+                          preOsszeg[index] = termekek[index].price * db[index];
+                        });
+                      },
+                      child: const Icon(Icons.add))
+                ],
+              )
+            ],
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+          label: const Text('Útvonal generálása'),
+          onPressed: () {
+            szamlalo++;
+          }),
+    );
   }
 }
