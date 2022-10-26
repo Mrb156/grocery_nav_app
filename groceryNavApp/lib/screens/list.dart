@@ -102,6 +102,9 @@ class _ListaState extends State<Lista> {
                             db[index]--;
                             osszeg = osszeg - termekek[index].price;
                           }
+                          if (db[index] == 0) {
+                            userChecked[index] = false;
+                          }
                         });
                       },
                       child: const Icon(Icons.remove)),
@@ -114,6 +117,10 @@ class _ListaState extends State<Lista> {
                       onPressed: () {
                         setState(() {
                           db[index]++;
+                          if (db[index] > 0) {
+                            userChecked[index] = true;
+                          }
+
                           osszeg = osszeg + termekek[index].price;
                           preOsszeg[index] = termekek[index].price * db[index];
                         });
