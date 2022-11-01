@@ -18,3 +18,11 @@ class Products {
 
   Products({required this.id, required this.price, required this.name});
 }
+
+class Data {
+  int price;
+  int db;
+  String name;
+
+  Data({required this.db, required this.name, required this.price});
+}
