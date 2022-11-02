@@ -11,6 +11,18 @@ class Node {
       this.visible = false});
 }
 
-class Products{
+class Products {
+  int id;
+  int price;
+  String name;
 
+  Products({required this.id, required this.price, required this.name});
+}
+
+class Data {
+  int price;
+  int db;
+  String name;
+
+  Data({required this.db, required this.name, required this.price});
 }
