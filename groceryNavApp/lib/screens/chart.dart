@@ -27,6 +27,22 @@ class Chart extends StatelessWidget {
         shadowColor: Colors.blue,
         backgroundColor: Colors.blue[300],
         title: const Text('Chart'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: (() {
+              szamlalo++;
+            }),
+            icon: const Icon(Icons.save),
+            color: Colors.amber[300],
+          ),
+          IconButton(
+            onPressed: (() {
+              szamlalo++;
+            }),
+            icon: const Icon(Icons.file_open),
+            color: Colors.amber[300],
+          )
+        ],
       ),
       body: Column(
         children: [
