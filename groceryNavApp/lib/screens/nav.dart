@@ -62,7 +62,8 @@ void generate() {
 }
 
 class Navigation extends StatefulWidget {
-  List<int> wishList = [];
+  List<Products> wishList = [];
+  
   Navigation(this.wishList) {
     wishList = wishList;
     totalnodes = wishList.length;
@@ -139,7 +140,7 @@ class _NavigationState extends State<Navigation> {
     }
     pathNodes.add(nodes[endNode]);
     for (int i = 0; i < widget.wishList.length; i++) {
-      order.add(widget.wishList[i]);
+      order.add(widget.wishList[i].id);
     }
     // Create population
     for (int i = 0; i < popTotal; i++) {

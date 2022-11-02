@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_nav_app/screens/list.dart';
 import 'package:grocery_nav_app/models/models.dart';
+import 'package:grocery_nav_app/screens/nav.dart';
 
 class Chart extends StatelessWidget {
   //Chart({super.key});
 
-  List<Data> sList = [];
+  List<Products> sList = [];
   Chart(this.sList);
 
   int ossz = 0;
@@ -83,7 +84,8 @@ class Chart extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.arrow_forward),
           onPressed: () {
-            szamlalo++;
+            Navigator.push(context,
+                MaterialPageRoute(builder: ((context) => Navigation(sList))));
           }),
     );
   }

@@ -9,19 +9,20 @@ List<Products> termekek = [
     id: 1,
     price: 500,
     name: 'Tej 2,8%',
+     db:0
   )),
-  (Products(id: 2, price: 1500, name: 'Sajt 700g')),
-  (Products(id: 3, price: 600, name: 'Coca Cola 2l')),
-  (Products(id: 4, price: 350, name: 'Margarin')),
-  (Products(id: 5, price: 120, name: 'Kifli')),
-  (Products(id: 6, price: 560, name: 'Szalámi')),
-  (Products(id: 7, price: 980, name: 'Sonka')),
-  (Products(id: 8, price: 660, name: 'Jégsaláta')),
-  (Products(id: 9, price: 200, name: 'Croissant')),
-  (Products(id: 10, price: 200, name: 'Sajtos pogácsa')),
-  (Products(id: 11, price: 570, name: 'Mizo Kakaó')),
-  (Products(id: 12, price: 810, name: 'WC papír')),
-  (Products(id: 13, price: 500, name: 'Tej 1,5%'))
+  (Products(id: 2, price: 1500, name: 'Sajt 700g', db:0)),
+  (Products(id: 3, price: 600, name: 'Coca Cola 2l', db:0)),
+  (Products(id: 4, price: 350, name: 'Margarin', db:0)),
+  (Products(id: 5, price: 120, name: 'Kifli', db:0)),
+  (Products(id: 6, price: 560, name: 'Szalámi', db:0)),
+  (Products(id: 7, price: 980, name: 'Sonka', db:0)),
+  (Products(id: 8, price: 660, name: 'Jégsaláta', db:0)),
+  (Products(id: 9, price: 200, name: 'Croissant', db:0)),
+  (Products(id: 10, price: 200, name: 'Sajtos pogácsa', db:0)),
+  (Products(id: 11, price: 570, name: 'Mizo Kakaó', db:0)),
+  (Products(id: 12, price: 810, name: 'WC papír', db:0)),
+  (Products(id: 13, price: 500, name: 'Tej 1,5%', db:0))
 ];
 
 class Lista extends StatefulWidget {
@@ -36,7 +37,7 @@ List<int> db = [];
 int osszeg = 0;
 List<int> preOsszeg = [];
 int szamlalo = 0;
-List<Data> savedList = [];
+List<Products> savedList = [];
 
 void decrement(int szam) {
   if (szam > 0) {
@@ -44,8 +45,8 @@ void decrement(int szam) {
   }
 }
 
-void save(int prc, int db, String product) {
-  savedList.add(Data(db: db, name: product, price: prc));
+void save(int prc, int db, String product, int id) {
+  savedList.add(Products(db: db, name: product, price: prc, id: id));
 }
 
 void increment(int szam) {
@@ -101,11 +102,11 @@ class _ListaState extends State<Lista> {
                     setState(() {
                       userChecked[index] = value!;
                       if (userChecked[index] == true) {
-                        db[index] = 1;
+                        termekek[index].db = 1;
                         osszeg = osszeg + termekek[index].price * 1;
                         preOsszeg[index] = termekek[index].price * 1;
                       } else if (userChecked[index] == false) {
-                        db[index] = 0;
+                        termekek[index].db = 0;
                         osszeg = osszeg - preOsszeg[index];
                       }
                     });
@@ -118,33 +119,33 @@ class _ListaState extends State<Lista> {
                     ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            if (db[index] <= 0) {
+                            if (termekek[index].db <= 0) {
                             } else {
-                              db[index]--;
+                              termekek[index].db--;
                               osszeg = osszeg - termekek[index].price;
                             }
-                            if (db[index] == 0) {
+                            if (termekek[index].db == 0) {
                               userChecked[index] = false;
                             }
                           });
                         },
                         child: const Icon(Icons.remove)),
                     Text(
-                      db[index].toString(),
+                      termekek[index].db.toString(),
                       style: const TextStyle(
                           fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                     ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            db[index]++;
-                            if (db[index] > 0) {
+                            termekek[index].db++;
+                            if (termekek[index].db > 0) {
                               userChecked[index] = true;
                             }
 
                             osszeg = osszeg + termekek[index].price;
                             preOsszeg[index] =
-                                termekek[index].price * db[index];
+                                termekek[index].price * termekek[index].db;
                           });
                         },
                         child: const Icon(Icons.add))
@@ -165,7 +166,7 @@ class _ListaState extends State<Lista> {
             }
             for (int i = 0; i < termekek.length; i++) {
               if (userChecked[i] == true) {
-                save(termekek[i].price, db[i], termekek[i].name);
+                save(termekek[i].price, termekek[i].db, termekek[i].name, termekek[i].id);
               }
             }
             Navigator.push(context,

@@ -15,8 +15,12 @@ class Products {
   int id;
   int price;
   String name;
-
-  Products({required this.id, required this.price, required this.name});
+  int db;
+  Products(
+      {required this.id,
+      required this.price,
+      required this.name,
+      required this.db});
 }
 
 class Data {
