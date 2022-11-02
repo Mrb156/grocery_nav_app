@@ -6,6 +6,8 @@ import 'package:grocery_nav_app/models/models.dart';
 import 'package:grocery_nav_app/pathFindingAlgorithm/pathFinding.dart';
 import 'dart:math';
 
+import 'package:transparent_pointer/transparent_pointer.dart';
+
 const double infinity = 1.0 / 0.0;
 int totalnodes = 0;
 var recordDistance = infinity;
@@ -78,6 +80,7 @@ class _NavigationState extends State<Navigation> {
 
   int popTotal = (99 / (1 / totalnodes) / 10).floor();
   int counter = 0;
+  int counterNumber = 100;
   List<List<int>> population = [];
   List<int> order = [];
   List<double> fitness = [];
@@ -206,7 +209,7 @@ class _NavigationState extends State<Navigation> {
       if (random.nextDouble() < mutationRate) {
         var indexA = random.nextInt(order.length - 2) + 1.floor();
         var indexB = indexA % totalnodes;
-          swap(order, indexA, indexB);
+        swap(order, indexA, indexB);
       }
     }
   }
@@ -264,7 +267,7 @@ class _NavigationState extends State<Navigation> {
 
     timer = Timer.periodic(const Duration(microseconds: 1), (Timer t) {
       ossz();
-      if (counter >= maxWait) {
+      if (counter >= counterNumber) {
         var road2 = getFinalRoute(road.value);
         road.value = List.from(road2);
         timer?.cancel();
@@ -325,6 +328,26 @@ class Grid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(
+                      "assets/images/Screenshot_floor_plan_sample.jpg"),
+                  fit: BoxFit.fitWidth),
+            ),
+          ),
+        ),
+        GestureDetector(
+          child: CustomPaint(
+            size: Size(MediaQuery.of(context).size.width,
+                MediaQuery.of(context).size.height),
+            painter: ArrowPainter(
+              path: road,
+            ),
+          ),
+        ),
         Stack(
           children: List.generate(
             nodes.length,
@@ -337,13 +360,6 @@ class Grid extends StatelessWidget {
                 ),
               );
             },
-          ),
-        ),
-        CustomPaint(
-          size: Size(MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height),
-          painter: ArrowPainter(
-            path: road,
           ),
         ),
       ],
@@ -360,8 +376,8 @@ class Element extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 20,
-      height: 20,
+      width: 40,
+      height: 40,
       decoration: BoxDecoration(
         color: visible ? Colors.amber : Color.fromARGB(32, 0, 0, 0),
         shape: BoxShape.circle,
