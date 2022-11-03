@@ -27,7 +27,7 @@ int osszeg = 0;
 List<int> preOsszeg = [];
 int szamlalo = 0;
 List<Products> savedList = [];
-String searchText = 'c';
+String searchText = '';
 TextEditingController _searchController = TextEditingController();
 
 void decrement(int szam) {

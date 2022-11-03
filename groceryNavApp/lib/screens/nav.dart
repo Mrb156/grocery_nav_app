@@ -92,7 +92,7 @@ class _NavigationState extends State<Navigation> {
   void visibility() {
     for (var i = 0; i < widget.wishList.length; i++) {
       for (var j = 0; j < nodes.length; j++) {
-        if (widget.wishList[i] == nodes[j].id) {
+        if (widget.wishList[i].id == nodes[j].id) {
           nodes[j].visible = true;
           break;
         }
