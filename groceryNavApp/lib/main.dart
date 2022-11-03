@@ -1,27 +1,34 @@
 import 'dart:math';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery_nav_app/screens/home.dart';
+//import 'package:grocery_nav_app/screens/home.dart';
 import 'package:grocery_nav_app/screens/nav.dart';
+import 'package:grocery_nav_app/screens/list.dart';
 
-void main() {
+
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  
   List<int> list = [19, 23, 16];
   void generate() {
     for (var i = 1; i < 23; i++) {
-        list.add(i);
+      list.add(i);
       var num = Random().nextInt(22) + 1;
-      if (!list.contains(num) && num != 21) {
-      }
+      if (!list.contains(num) && num != 21) {}
     }
   }
 
   MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    
     //generate();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -30,7 +37,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.amber,
         useMaterial3: true,
       ),
-      home: Navigation(list),
+      home: const Lista(),
     );
   }
 }
