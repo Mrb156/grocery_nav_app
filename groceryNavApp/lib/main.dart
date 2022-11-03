@@ -1,15 +1,21 @@
 import 'dart:math';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 //import 'package:grocery_nav_app/screens/home.dart';
 import 'package:grocery_nav_app/screens/nav.dart';
 import 'package:grocery_nav_app/screens/list.dart';
 
-void main() {
+
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  
   List<int> list = [19, 23, 16];
   void generate() {
     for (var i = 1; i < 23; i++) {
@@ -22,6 +28,7 @@ class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    
     //generate();
     return MaterialApp(
       debugShowCheckedModeBanner: false,

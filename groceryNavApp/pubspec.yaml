@@ -36,6 +36,8 @@ dependencies:
   arrow_path: ^3.0.0
   expansion_tile_card: ^2.0.0
   transparent_pointer: ^1.0.0
+  firebase_core: ^2.1.1
+  cloud_firestore: ^4.0.3
 
 
 
