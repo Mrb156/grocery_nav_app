@@ -90,7 +90,17 @@ class _ListaState extends State<Lista> {
               appBar: AppBar(
                 foregroundColor: Colors.black,
                 backgroundColor: Colors.amber,
-                title: const Text('Lista'),
+                title: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.amber[100],
+                      prefixIcon: Icon(Icons.search),
+                      hintText: 'Search',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide.none)),
+                ),
                 actions: <Widget>[
                   IconButton(
                     onPressed: (() {
