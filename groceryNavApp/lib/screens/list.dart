@@ -101,11 +101,9 @@ class _ListaState extends State<Lista> {
               check();
             }
             return Scaffold(
-              backgroundColor: Colors.blue[100],
               appBar: AppBar(
-                foregroundColor: Colors.amber[300],
-                shadowColor: Colors.blue,
-                backgroundColor: Colors.blue[300],
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.amber,
                 title: const Text('Lista'),
                 actions: <Widget>[
                   IconButton(
@@ -113,26 +111,26 @@ class _ListaState extends State<Lista> {
                       szamlalo++;
                     }),
                     icon: const Icon(Icons.save),
-                    color: Colors.amber[300],
+                    color: Colors.black,
                   ),
                   IconButton(
                     onPressed: (() {
                       szamlalo++;
                     }),
                     icon: const Icon(Icons.file_open),
-                    color: Colors.amber[300],
+                    color: Colors.black,
                   )
                 ],
               ),
               body: ListView.builder(
-                padding: const EdgeInsets.only(bottom: 56),
+                padding: const EdgeInsets.only(bottom: 56, top: 40),
                 itemCount: termekek.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ExpansionTileCard(
                     initialPadding: EdgeInsets.all(12.0),
-                    expandedColor: Colors.amber[500],
+                    expandedColor: Colors.amber,
                     expandedTextColor: Colors.black87,
-                    baseColor: Colors.amber[300],
+                    baseColor: Colors.amber,
                     subtitle: Text(termekek[index].price.toString() + ' Ft'),
                     trailing: Checkbox(
                         value: userChecked[index],

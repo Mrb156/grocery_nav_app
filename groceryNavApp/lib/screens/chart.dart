@@ -24,9 +24,8 @@ class Chart extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        foregroundColor: Colors.amber[300],
-        shadowColor: Colors.blue,
-        backgroundColor: Colors.blue[300],
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.amber,
         title: const Text('Chart'),
         actions: <Widget>[
           IconButton(
@@ -34,14 +33,14 @@ class Chart extends StatelessWidget {
               szamlalo++;
             }),
             icon: const Icon(Icons.save),
-            color: Colors.amber[300],
+            color: Colors.black,
           ),
           IconButton(
             onPressed: (() {
               szamlalo++;
             }),
             icon: const Icon(Icons.file_open),
-            color: Colors.amber[300],
+            color: Colors.black,
           )
         ],
       ),
@@ -82,6 +81,7 @@ class Chart extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.amber,
           child: const Icon(Icons.arrow_forward),
           onPressed: () {
             Navigator.push(context,
