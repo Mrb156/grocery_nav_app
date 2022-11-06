@@ -5,21 +5,7 @@ import 'package:grocery_nav_app/models/models.dart';
 import 'package:grocery_nav_app/screens/chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-List<Products> termekek = [
-  // (Products(id: 1, price: 500, name: 'Tej 2,8%', db: 0)),
-  // (Products(id: 2, price: 1500, name: 'Sajt 700g', db: 0)),
-  // (Products(id: 3, price: 600, name: 'Coca Cola 2l', db: 0)),
-  // (Products(id: 4, price: 350, name: 'Margarin', db: 0)),
-  // (Products(id: 5, price: 120, name: 'Kifli', db: 0)),
-  // (Products(id: 6, price: 560, name: 'Szalámi', db: 0)),
-  // (Products(id: 7, price: 980, name: 'Sonka', db: 0)),
-  // (Products(id: 8, price: 660, name: 'Jégsaláta', db: 0)),
-  // (Products(id: 9, price: 200, name: 'Croissant', db: 0)),
-  // (Products(id: 10, price: 200, name: 'Sajtos pogácsa', db: 0)),
-  // (Products(id: 11, price: 570, name: 'Mizo Kakaó', db: 0)),
-  // (Products(id: 12, price: 810, name: 'WC papír', db: 0)),
-  // (Products(id: 13, price: 500, name: 'Tej 1,5%', db: 0))
-];
+List<Products> termekek = [];
 
 List<bool> userChecked = [];
 List<int> db = [];
@@ -212,6 +198,12 @@ class _ListaState extends State<Lista> {
                           builder: ((context) => Chart(savedList))));
                 },
               ),
+              bottomNavigationBar: BottomAppBar(
+                  color: Colors.amber,
+                  child: Text(
+                    'Végösszeg: ' + osszeg.toString() + 'Ft',
+                    textAlign: TextAlign.center,
+                  )),
             );
           } else {
             return Center(
