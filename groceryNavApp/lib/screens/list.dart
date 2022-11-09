@@ -6,7 +6,7 @@ import 'package:grocery_nav_app/screens/chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 List<Products> termekek = [];
-
+List<Products> filtered = [];
 List<bool> userChecked = [];
 List<int> db = [];
 int osszeg = 0;
@@ -51,6 +51,28 @@ class _ListaState extends State<Lista> {
   List<DocumentSnapshot> prod = [];
 
   @override
+  void initState() {
+    filtered = termekek;
+    super.initState();
+  }
+
+  void _runfilter(String keyword) {
+    List<Products> results = [];
+    if (keyword.isEmpty) {
+      results = termekek;
+    } else {
+      results = termekek
+          .where((termek) =>
+              termek.name.toLowerCase().contains(keyword.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      filtered = results;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         stream: products.snapshots(),
@@ -90,16 +112,20 @@ class _ListaState extends State<Lista> {
               appBar: AppBar(
                 foregroundColor: Colors.black,
                 backgroundColor: Colors.amber,
-                title: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.amber[100],
-                      prefixIcon: Icon(Icons.search),
-                      hintText: 'Search',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide.none)),
+                title: SizedBox(
+                  height: 40,
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (value) => _runfilter(value),
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.amber[100],
+                        prefixIcon: Icon(Icons.search),
+                        hintText: 'Search',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide.none)),
+                  ),
                 ),
                 actions: <Widget>[
                   IconButton(
@@ -120,14 +146,14 @@ class _ListaState extends State<Lista> {
               ),
               body: ListView.builder(
                 padding: const EdgeInsets.only(bottom: 56, top: 40),
-                itemCount: termekek.length,
+                itemCount: filtered.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ExpansionTileCard(
                     initialPadding: EdgeInsets.all(12.0),
                     expandedColor: Colors.amber,
                     expandedTextColor: Colors.black87,
                     baseColor: Colors.amber,
-                    subtitle: Text(termekek[index].price.toString() + ' Ft'),
+                    subtitle: Text(filtered[index].price.toString() + ' Ft'),
                     trailing: Checkbox(
                         value: userChecked[index],
                         onChanged: (bool? value) {
@@ -143,7 +169,7 @@ class _ListaState extends State<Lista> {
                             }
                           });
                         }),
-                    title: Text(termekek[index].name),
+                    title: Text(filtered[index].name),
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
