@@ -18,52 +18,71 @@ String done = 'Navigation - Az útvonal számítása folyamatban van';
 List<Node> nodes = [];
 List<Node> pathNodes = [];
 
-void generate() {
-  //w=411.4 h=700
-  nodes.add(Node(x: 185, y: 650, id: 0));
+void generate(BuildContext context) {
+  double w = MediaQuery.of(context).size.width;
+  double h = MediaQuery.of(context).size.height;
+  //w->balról számol
+  //h->h fentről számol
+  nodes.add(Node(x: w * 0.37, y: h * 0.57, id: 0));
 
-  nodes.add(Node(x: 185, y: 500, id: 1));
+  nodes.add(Node(x: w * 0.86, y: h * 0.385, id: 1));
+  nodes.add(Node(x: w * 0.86, y: h * 0.305, id: 2));
+  nodes.add(Node(x: w * 0.86, y: h * 0.225, id: 3));
+  nodes.add(Node(x: w * 0.86, y: h * 0.15, id: 4));
 
-  nodes.add(Node(x: 135, y: 500, id: 2));
-  nodes.add(Node(x: 85, y: 500, id: 3));
-  nodes.add(Node(x: 35, y: 500, id: 4));
+  nodes.add(Node(x: w * 0.8, y: h * 0.09, id: 5));
+  nodes.add(Node(x: w * 0.65, y: h * 0.09, id: 6));
+  nodes.add(Node(x: w * 0.49, y: h * 0.09, id: 7));
+  nodes.add(Node(x: w * 0.33, y: h * 0.09, id: 8));
+  nodes.add(Node(x: w * 0.2, y: h * 0.09, id: 9));
 
-  nodes.add(Node(x: 35, y: 400, id: 5));
-  nodes.add(Node(x: 85, y: 400, id: 6));
-  nodes.add(Node(x: 135, y: 400, id: 7));
+  nodes.add(Node(x: w * 0.08, y: h * 0.12, id: 10));
+  nodes.add(Node(x: w * 0.08, y: h * 0.19, id: 11));
+  nodes.add(Node(x: w * 0.08, y: h * 0.27, id: 12));
+  nodes.add(Node(x: w * 0.08, y: h * 0.34, id: 13));
 
-  nodes.add(Node(x: 185, y: 400, id: 8));
+  nodes.add(Node(x: w * 0.7, y: h * 0.32, id: 14));
+  nodes.add(Node(x: w * 0.7, y: h * 0.225, id: 15));
+  nodes.add(Node(x: w * 0.595, y: h * 0.225, id: 16));
+  nodes.add(Node(x: w * 0.595, y: h * 0.32, id: 17));
 
-  nodes.add(Node(x: 185, y: 300, id: 9));
+  nodes.add(Node(x: w * 0.41, y: h * 0.4, id: 18));
+  nodes.add(Node(x: w * 0.41, y: h * 0.32, id: 19));
+  nodes.add(Node(x: w * 0.41, y: h * 0.225, id: 20));
+  nodes.add(Node(x: w * 0.315, y: h * 0.225, id: 21));
+  nodes.add(Node(x: w * 0.315, y: h * 0.32, id: 22));
+  nodes.add(Node(x: w * 0.315, y: h * 0.4, id: 23));
 
-  nodes.add(Node(x: 135, y: 300, id: 10));
-  nodes.add(Node(x: 85, y: 300, id: 11));
-  nodes.add(Node(x: 35, y: 300, id: 12));
+  nodes.add(Node(x: w * 0.12, y: h * 0.465, id: 24));
+  nodes.add(Node(x: w * 0.12, y: h * 0.57, id: 25));
 
-  nodes.add(Node(x: 235, y: 300, id: 13));
-  nodes.add(Node(x: 285, y: 300, id: 14));
-  nodes.add(Node(x: 335, y: 300, id: 15));
+  //innentől a kösztes útvonal elemei vannak
+  nodes.add(Node(x: w * 0.37, y: h * 0.5, id: 26));
+  nodes.add(Node(x: w * 0.51, y: h * 0.5, id: 27));
+  nodes.add(Node(x: w * 0.51, y: h * 0.41, id: 28));
+  nodes.add(Node(x: w * 0.65, y: h * 0.41, id: 29));
 
-  nodes.add(Node(x: 335, y: 400, id: 18));
-  nodes.add(Node(x: 285, y: 400, id: 17));
-  nodes.add(Node(x: 235, y: 400, id: 16));
+  nodes.add(Node(x: w * 0.775, y: h * 0.41, id: 30));
+  nodes.add(Node(x: w * 0.775, y: h * 0.34, id: 31));
+  nodes.add(Node(x: w * 0.775, y: h * 0.225, id: 32));
+  nodes.add(Node(x: w * 0.75, y: h * 0.14, id: 33));
+  nodes.add(Node(x: w * 0.65, y: h * 0.14, id: 34));
+  nodes.add(Node(x: w * 0.51, y: h * 0.14, id: 35));
+  nodes.add(Node(x: w * 0.51, y: h * 0.225, id: 36));
+  nodes.add(Node(x: w * 0.51, y: h * 0.32, id: 37));
+  nodes.add(Node(x: w * 0.36, y: h * 0.14, id: 38));
+  nodes.add(Node(x: w * 0.21, y: h * 0.14, id: 39));
+  nodes.add(Node(x: w * 0.21, y: h * 0.225, id: 40));
+  nodes.add(Node(x: w * 0.21, y: h * 0.32, id: 41));
+  nodes.add(Node(x: w * 0.21, y: h * 0.4, id: 42));
+  nodes.add(Node(x: w * 0.21, y: h * 0.47, id: 43));
 
-  nodes.add(Node(x: 335, y: 500, id: 21));
-  nodes.add(Node(x: 285, y: 500, id: 20));
-  nodes.add(Node(x: 235, y: 500, id: 19));
-
-  nodes.add(Node(x: 185, y: 100, id: 22));
-  nodes.add(Node(x: 300, y: 100, id: 23));
-
-  // for (int i = 0; i < totalnodes; i++) {
-  //   nodes.add(Node(
-  //       id: i, x: random.nextDouble() * 380, y: random.nextDouble() * 690));
-  // }
+  nodes.add(Node(x: w * 0.774, y: h * 0.47, id: 44));
 }
 
 class Navigation extends StatefulWidget {
   List<Products> wishList = [];
-  
+
   Navigation(this.wishList) {
     wishList = wishList;
     totalnodes = wishList.length;
@@ -77,7 +96,7 @@ class _NavigationState extends State<Navigation> {
   bool showArrows = true;
   var random = Random();
   int startNode = 0;
-  int endNode = 23;
+  int endNode = 44;
 
   int popTotal = (99 / (1 / totalnodes) / 10).floor();
   int counter = 0;
@@ -101,7 +120,7 @@ class _NavigationState extends State<Navigation> {
   }
 
   List<List<double>> d_matrix =
-      List.generate(24, (i) => List.generate(24, (j) => 0));
+      List.generate(44, (i) => List.generate(44, (j) => 0));
 
   void swap(a, i, j) {
     var temp = a[i];
@@ -262,8 +281,6 @@ class _NavigationState extends State<Navigation> {
 
   @override
   void initState() {
-    generate();
-    setup();
     super.initState();
 
     timer = Timer.periodic(const Duration(microseconds: 1), (Timer t) {
@@ -277,7 +294,6 @@ class _NavigationState extends State<Navigation> {
           // print(road.value);
           roadFlow = road;
         });
-        print("end");
       }
     });
   }
@@ -290,6 +306,9 @@ class _NavigationState extends State<Navigation> {
 
   @override
   Widget build(BuildContext context) {
+    if (nodes.isEmpty) {}
+    generate(context);
+    setup();
     return Scaffold(
       appBar: AppBar(title: Text(done), actions: <Widget>[
         Padding(
@@ -334,8 +353,7 @@ class Grid extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage(
-                      "assets/images/Screenshot_floor_plan_sample.jpg"),
+                  image: AssetImage("assets/images/floor.jpg"),
                   fit: BoxFit.fitWidth),
             ),
           ),
@@ -377,17 +395,17 @@ class Element extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 40,
-      height: 40,
+      width: MediaQuery.of(context).size.width * 0.06,
+      height: MediaQuery.of(context).size.width * 0.1,
       decoration: BoxDecoration(
-        color: visible ? Colors.amber : Color.fromARGB(32, 0, 0, 0),
+        color: visible ? Colors.amber : const Color.fromARGB(32, 0, 0, 0),
         shape: BoxShape.circle,
       ),
       child: Center(
           child: Text(
         id.toString(),
         style: TextStyle(
-            color: visible ? Colors.black : Color.fromARGB(73, 0, 0, 0)),
+            color: visible ? Colors.black : const Color.fromARGB(73, 0, 0, 0)),
       )),
     );
   }

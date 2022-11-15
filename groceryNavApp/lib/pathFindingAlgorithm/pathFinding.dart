@@ -1,9 +1,8 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'dijkstra.dart';
 
-const int nV = 24;
+const int nV = 44;
 
 const double INF = 1.0 / 0.0;
 
@@ -18,7 +17,7 @@ void floydWarshall(List<List<double>> d_graph) {
 
   for (i = 0; i < nV; i++) {
     for (j = 0; j < nV; j++) {
-      matrix[i][j] = graph[i][j];
+      matrix[i][j] = graph2[i][j];
       //matrix = graph;
     }
   }
@@ -41,28 +40,7 @@ void floydWarshall(List<List<double>> d_graph) {
   //printMatrix(matrix);
 }
 
-double calcDistance(order) {
-  double sum = 0.0;
-  for (var i = 0; i < order.length - 1; i++) {
-    double d = d_matrix[order[i]][order[i + 1]];
-    sum += d;
-  }
-  return sum;
-}
-
-void printMatrix(List<List<double>> matrix) {
-  for (int i = 0; i < nV; i++) {
-    for (int j = 0; j < nV; j++) {
-      if (matrix[i][j] == INF)
-        stdout.write("INF");
-      else
-        stdout.write(matrix[i][j].toString() + " ");
-    }
-    stdout.write("\n");
-  }
-}
-
-List<List<double>> graph = [
+List<List<double>> graph1 = [
 [0, 11, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
 [ 11,0, 1, INF, INF, INF, INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 1, INF, INF, INF, INF,],
 [ INF, 1,0, 1, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
@@ -88,6 +66,57 @@ List<List<double>> graph = [
 [ INF, INF, INF, INF, INF, INF, INF, INF, INF, 11, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,0, 11,],
 [ INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 11,0,],];
 
+List<List<double>> graph2 = 
+
+[
+[0, 3, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, ],
+[3, 0 , 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, 3, 0 , 3, INF, 3, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[3, INF, 3, 0 , INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, INF, 3, INF, ],
+[INF, INF, INF, INF, 0 , INF, INF, 3, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, INF, INF, INF, ],
+[INF, INF, 3, INF, INF, 0 , INF, INF, 3, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, 3, INF, INF, INF, 0 , 3, INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, 3, INF, 3, 0 , INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, 3, INF, INF, 0 , INF, 3, 3, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, 3, INF, INF, INF, INF, 0 , 3, INF, INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, 3, 3, INF, 3, 3, 0 , INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, 0 , INF, 3, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, 0 , INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, 3, INF, 0 , INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, 3, INF, 0 , INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, INF, 0 , 3, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, 3, 0 , INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, 0 , 3, INF, INF, INF, INF, INF, INF, 3, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, 0 , 3, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, 3, 0 , 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, 3, 0 , 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, 0 , 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, 0 , 3, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, 0 , 3, INF, INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, 0 , INF, INF, 3, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, INF, INF, 3, INF, INF, 0 , INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, 0 , INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, 0 , INF, INF, 3, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, 3, INF, 3, INF, 0 , 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, 0 , INF, 3, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, 0 , INF, 3, INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, 0 , INF, INF, 3, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, 3, 3, INF, 0 , INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 0 , 3, 3, INF, 3, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, 3, 3, 0 , INF, INF, INF, INF, 3, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, 3, INF, 0 , INF, INF, 3, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, INF, INF, 0 , INF, INF, INF, INF, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, INF, 0 , 3, 3, INF, 3, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, 3, 0 , INF, INF, 3, INF, INF, INF, ],
+[INF, INF, INF, 3, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, INF, 3, INF, 0 , 3, INF, INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, 0 , 3, 3, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, 3, INF, 3, 0 , INF, INF, INF, ],
+[INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, INF, 0 , 3, INF, ],
+[INF, INF, INF, 3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 3, 0 , INF, ],
+[3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 0 , ],
+];
+
+
 List<int> generatePath(List<int> wishList) {
   floydWarshall(d_matrix);
 
@@ -112,7 +141,7 @@ List<int> generatePath(List<int> wishList) {
     order.add(minIndex);
   }
   for (int i = 1; i < order.length; i++) {
-    dijkstra(graph, order[i - 1], order[i]);
+    dijkstra(graph2, order[i - 1], order[i]);
   }
 
   for (int i = 1; i < road.length; i++) {
@@ -128,7 +157,7 @@ List<int> generatePath(List<int> wishList) {
 List<int> getFinalRoute(order) {
   //List<int> road = [];
   for (int i = 1; i < order.length; i++) {
-    dijkstra(graph, order[i - 1], order[i]);
+    dijkstra(graph2, order[i - 1], order[i]);
   }
 
   // for (int i = 1; i < road.length; i++) {

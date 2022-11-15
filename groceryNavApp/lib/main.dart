@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_nav_app/models/models.dart';
 //import 'package:grocery_nav_app/screens/home.dart';
 import 'package:grocery_nav_app/screens/nav.dart';
 import 'package:grocery_nav_app/screens/list.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.amber,
         useMaterial3: true,
       ),
-      home: const Lista(),
+      home: Lista(/*[Products(db: 0, name: "product", price: 2, id: 1)]*/),
     );
   }
 }
