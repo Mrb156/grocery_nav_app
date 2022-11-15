@@ -83,7 +83,7 @@ class _ListaState extends State<Lista> {
             if (termekek.isEmpty) {
               for (var i = 0; i < prod.length; i++) {
                 termekek.add(Products(
-                    id: prod[i].get("id"),
+                    id: prod[i].get("szektor"),
                     name: prod[i].get("name"),
                     price: prod[i].get("price"),
                     db: prod[i].get("db")));

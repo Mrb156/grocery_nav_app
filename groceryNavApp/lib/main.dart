@@ -7,16 +7,13 @@ import 'package:grocery_nav_app/models/models.dart';
 import 'package:grocery_nav_app/screens/nav.dart';
 import 'package:grocery_nav_app/screens/list.dart';
 
-
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  
   List<int> list = [19, 23, 16];
   void generate() {
     for (var i = 1; i < 23; i++) {
@@ -29,7 +26,6 @@ class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    
     //generate();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -38,7 +34,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.amber,
         useMaterial3: true,
       ),
-      home: Lista(/*[Products(db: 0, name: "product", price: 2, id: 1)]*/),
+      home: Navigation([Products(db: 0, name: "product", price: 2, id: 1),Products(db: 0, name: "product", price: 2, id: 19)]),
     );
   }
 }

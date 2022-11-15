@@ -24,61 +24,61 @@ void generate(BuildContext context) {
   double h = MediaQuery.of(context).size.height;
   //w->balról számol
   //h->h fentről számol
-  nodes.add(Node(x: w * 0.37, y: h * 0.57, id: 0));
+  nodes.add(Node(x: w * 0.37, y: h * 0.65, id: 0));
 
-  nodes.add(Node(x: w * 0.86, y: h * 0.385, id: 1));
-  nodes.add(Node(x: w * 0.86, y: h * 0.305, id: 2));
-  nodes.add(Node(x: w * 0.86, y: h * 0.225, id: 3));
-  nodes.add(Node(x: w * 0.86, y: h * 0.15, id: 4));
+  nodes.add(Node(x: w * 0.86, y: h * 0.475, id: 1));
+  nodes.add(Node(x: w * 0.86, y: h * 0.405, id: 2));
+  nodes.add(Node(x: w * 0.86, y: h * 0.325, id: 3));
+  nodes.add(Node(x: w * 0.86, y: h * 0.25, id: 4));
 
-  nodes.add(Node(x: w * 0.8, y: h * 0.09, id: 5));
-  nodes.add(Node(x: w * 0.65, y: h * 0.09, id: 6));
-  nodes.add(Node(x: w * 0.49, y: h * 0.09, id: 7));
-  nodes.add(Node(x: w * 0.33, y: h * 0.09, id: 8));
-  nodes.add(Node(x: w * 0.2, y: h * 0.09, id: 9));
+  nodes.add(Node(x: w * 0.8, y: h * 0.19, id: 5));
+  nodes.add(Node(x: w * 0.65, y: h * 0.19, id: 6));
+  nodes.add(Node(x: w * 0.49, y: h * 0.19, id: 7));
+  nodes.add(Node(x: w * 0.33, y: h * 0.19, id: 8));
+  nodes.add(Node(x: w * 0.2, y: h * 0.19, id: 9));
 
-  nodes.add(Node(x: w * 0.08, y: h * 0.12, id: 10));
-  nodes.add(Node(x: w * 0.08, y: h * 0.19, id: 11));
-  nodes.add(Node(x: w * 0.08, y: h * 0.27, id: 12));
-  nodes.add(Node(x: w * 0.08, y: h * 0.34, id: 13));
+  nodes.add(Node(x: w * 0.08, y: h * 0.22, id: 10));
+  nodes.add(Node(x: w * 0.08, y: h * 0.29, id: 11));
+  nodes.add(Node(x: w * 0.08, y: h * 0.37, id: 12));
+  nodes.add(Node(x: w * 0.08, y: h * 0.44, id: 13));
 
-  nodes.add(Node(x: w * 0.7, y: h * 0.32, id: 14));
-  nodes.add(Node(x: w * 0.7, y: h * 0.225, id: 15));
-  nodes.add(Node(x: w * 0.595, y: h * 0.225, id: 16));
-  nodes.add(Node(x: w * 0.595, y: h * 0.32, id: 17));
+  nodes.add(Node(x: w * 0.7, y: h * 0.42, id: 14));
+  nodes.add(Node(x: w * 0.7, y: h * 0.325, id: 15));
+  nodes.add(Node(x: w * 0.595, y: h * 0.325, id: 16));
+  nodes.add(Node(x: w * 0.595, y: h * 0.42, id: 17));
 
-  nodes.add(Node(x: w * 0.41, y: h * 0.4, id: 18));
-  nodes.add(Node(x: w * 0.41, y: h * 0.32, id: 19));
-  nodes.add(Node(x: w * 0.41, y: h * 0.225, id: 20));
-  nodes.add(Node(x: w * 0.315, y: h * 0.225, id: 21));
-  nodes.add(Node(x: w * 0.315, y: h * 0.32, id: 22));
-  nodes.add(Node(x: w * 0.315, y: h * 0.4, id: 23));
+  nodes.add(Node(x: w * 0.41, y: h * 0.5, id: 18));
+  nodes.add(Node(x: w * 0.41, y: h * 0.42, id: 19));
+  nodes.add(Node(x: w * 0.41, y: h * 0.325, id: 20));
+  nodes.add(Node(x: w * 0.315, y: h * 0.325, id: 21));
+  nodes.add(Node(x: w * 0.315, y: h * 0.42, id: 22));
+  nodes.add(Node(x: w * 0.315, y: h * 0.5, id: 23));
 
-  nodes.add(Node(x: w * 0.12, y: h * 0.465, id: 24));
-  nodes.add(Node(x: w * 0.12, y: h * 0.57, id: 25));
+  nodes.add(Node(x: w * 0.12, y: h * 0.565, id: 24));
+  nodes.add(Node(x: w * 0.12, y: h * 0.65, id: 25));
 
   //innentől a kösztes útvonal elemei vannak
-  nodes.add(Node(x: w * 0.37, y: h * 0.5, id: 26));
-  nodes.add(Node(x: w * 0.51, y: h * 0.5, id: 27));
-  nodes.add(Node(x: w * 0.51, y: h * 0.41, id: 28));
-  nodes.add(Node(x: w * 0.65, y: h * 0.41, id: 29));
+  nodes.add(Node(x: w * 0.37, y: h * 0.6, id: 26));
+  nodes.add(Node(x: w * 0.51, y: h * 0.6, id: 27));
+  nodes.add(Node(x: w * 0.51, y: h * 0.51, id: 28));
+  nodes.add(Node(x: w * 0.65, y: h * 0.51, id: 29));
 
-  nodes.add(Node(x: w * 0.775, y: h * 0.41, id: 30));
-  nodes.add(Node(x: w * 0.775, y: h * 0.34, id: 31));
-  nodes.add(Node(x: w * 0.775, y: h * 0.225, id: 32));
-  nodes.add(Node(x: w * 0.75, y: h * 0.14, id: 33));
-  nodes.add(Node(x: w * 0.65, y: h * 0.14, id: 34));
-  nodes.add(Node(x: w * 0.51, y: h * 0.14, id: 35));
-  nodes.add(Node(x: w * 0.51, y: h * 0.225, id: 36));
-  nodes.add(Node(x: w * 0.51, y: h * 0.32, id: 37));
-  nodes.add(Node(x: w * 0.36, y: h * 0.14, id: 38));
-  nodes.add(Node(x: w * 0.21, y: h * 0.14, id: 39));
-  nodes.add(Node(x: w * 0.21, y: h * 0.225, id: 40));
-  nodes.add(Node(x: w * 0.21, y: h * 0.32, id: 41));
-  nodes.add(Node(x: w * 0.21, y: h * 0.4, id: 42));
-  nodes.add(Node(x: w * 0.21, y: h * 0.47, id: 43));
+  nodes.add(Node(x: w * 0.775, y: h * 0.51, id: 30));
+  nodes.add(Node(x: w * 0.775, y: h * 0.44, id: 31));
+  nodes.add(Node(x: w * 0.775, y: h * 0.325, id: 32));
+  nodes.add(Node(x: w * 0.75, y: h * 0.24, id: 33));
+  nodes.add(Node(x: w * 0.65, y: h * 0.24, id: 34));
+  nodes.add(Node(x: w * 0.51, y: h * 0.24, id: 35));
+  nodes.add(Node(x: w * 0.51, y: h * 0.325, id: 36));
+  nodes.add(Node(x: w * 0.51, y: h * 0.42, id: 37));
+  nodes.add(Node(x: w * 0.36, y: h * 0.24, id: 38));
+  nodes.add(Node(x: w * 0.21, y: h * 0.24, id: 39));
+  nodes.add(Node(x: w * 0.21, y: h * 0.325, id: 40));
+  nodes.add(Node(x: w * 0.21, y: h * 0.42, id: 41));
+  nodes.add(Node(x: w * 0.21, y: h * 0.5, id: 42));
+  nodes.add(Node(x: w * 0.21, y: h * 0.6, id: 43));
 
-  nodes.add(Node(x: w * 0.774, y: h * 0.47, id: 44));
+  nodes.add(Node(x: w * 0.774, y: h * 0.57, id: 44));
 }
 
 class Navigation extends StatefulWidget {
@@ -87,6 +87,7 @@ class Navigation extends StatefulWidget {
   Navigation(this.wishList) {
     wishList = wishList;
     totalnodes = wishList.length;
+    print(totalnodes);
   }
 
   @override
@@ -101,7 +102,7 @@ class _NavigationState extends State<Navigation> {
 
   int popTotal = (99 / (1 / totalnodes) / 10).floor();
   int counter = 0;
-  int counterNumber = 100;
+  int counterNumber = 10000;
   List<List<int>> population = [];
   List<int> order = [];
   List<double> fitness = [];
@@ -121,7 +122,7 @@ class _NavigationState extends State<Navigation> {
   }
 
   List<List<double>> d_matrix =
-      List.generate(44, (i) => List.generate(44, (j) => 0));
+      List.generate(45, (i) => List.generate(45, (j) => 0));
 
   void swap(a, i, j) {
     var temp = a[i];
@@ -151,9 +152,10 @@ class _NavigationState extends State<Navigation> {
     totalnodes = widget.wishList.length + 2;
     visibility();
     floydWarshall(d_matrix);
+    pathNodes.add(nodes[startNode]);
     for (var i = 0; i < widget.wishList.length; i++) {
       for (var j = 0; j < nodes.length; j++) {
-        if (widget.wishList[i] == nodes[j].id) {
+        if (widget.wishList[i].id == nodes[j].id) {
           pathNodes.add(nodes[j]);
         }
       }
@@ -162,6 +164,7 @@ class _NavigationState extends State<Navigation> {
     for (int i = 0; i < widget.wishList.length; i++) {
       order.add(widget.wishList[i].id);
     }
+
     // Create population
     for (int i = 0; i < popTotal; i++) {
       List<int> pop2 = [];
@@ -283,7 +286,7 @@ class _NavigationState extends State<Navigation> {
   @override
   void initState() {
     super.initState();
-
+    setup();
     timer = Timer.periodic(const Duration(microseconds: 1), (Timer t) {
       ossz();
       if (counter >= counterNumber) {
@@ -292,7 +295,7 @@ class _NavigationState extends State<Navigation> {
         timer?.cancel();
         setState(() {
           done = 'Navigation - Kész!';
-          // print(road.value);
+          print(road.value);
           roadFlow = road;
         });
       }
@@ -307,9 +310,9 @@ class _NavigationState extends State<Navigation> {
 
   @override
   Widget build(BuildContext context) {
-    if (nodes.isEmpty) {}
-    generate(context);
-    setup();
+    if (nodes.isEmpty) {
+      generate(context);
+    }
     return Scaffold(
       appBar: AppBar(title: Text(done), actions: <Widget>[
         const Padding(
@@ -363,8 +366,7 @@ class Grid extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(
-                        "assets/images/floor.jpg"),
+                    image: AssetImage("assets/images/floor.jpg"),
                     fit: BoxFit.fitWidth),
               ),
             ),

@@ -1,5 +1,5 @@
 const int NO_PARENT = -1;
-const int nV = 24;
+const int nV = 45;
 const double INF = 999;
 
 List<int> road = [];
