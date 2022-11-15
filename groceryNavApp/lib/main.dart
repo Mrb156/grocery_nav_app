@@ -34,7 +34,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.amber,
         useMaterial3: true,
       ),
-      home: Navigation([Products(db: 0, name: "product", price: 2, id: 1),Products(db: 0, name: "product", price: 2, id: 19)]),
+      home: Lista(/*[Products(db: 0, name: "product", price: 2, id: 1),Products(db: 0, name: "product", price: 2, id: 19),
+      Products(db: 0, name: "product", price: 20, id: 1),Products(db: 0, name: "product", price: 2, id: 3),
+      Products(db: 0, name: "product", price: 12, id: 1),Products(db: 0, name: "product", price: 2, id: 9),
+      Products(db: 0, name: "product", price: 5, id: 1),Products(db: 0, name: "product", price: 2, id: 17),]*/),
     );
   }
 }

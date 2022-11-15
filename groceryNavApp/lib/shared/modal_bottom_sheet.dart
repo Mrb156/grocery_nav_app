@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
-
-final List<IconData> icons = const [
-  Icons.message,
-  Icons.call,
-  Icons.mail,
-  Icons.notifications,
-  Icons.settings,
-];
+import 'package:grocery_nav_app/models/models.dart';
 
 Widget previewWidget(BuildContext context) {
   return Container(
@@ -34,7 +27,7 @@ Widget previewWidget(BuildContext context) {
   );
 }
 
-Widget expandedWidget() {
+Widget expandedWidget(List<Products> wishlist) {
   return Container(
     padding: EdgeInsets.all(16),
     decoration: const BoxDecoration(
@@ -52,15 +45,19 @@ Widget expandedWidget() {
           child: ListView.builder(
               //physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: 15,
+              itemCount: wishlist.length,
               itemBuilder: (context, index) {
+                int productPlace = wishlist[index].id;
+                String productName = wishlist[index].name;
+                double padd =MediaQuery.of(context).size.width*0.05;
                 return Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(30),
+                    padding: EdgeInsets.symmetric(vertical: padd, horizontal: padd*0.04),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text("Hely: $index"),
-                        Text("\n\nTej meg egyéb más termék"),
+                        Text("Szektor: $productPlace"),
+                        Text("\n\n$productName", overflow: TextOverflow.visible),
                       ],
                     ),
                   ),

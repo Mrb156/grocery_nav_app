@@ -18,6 +18,7 @@ String done = 'Navigation - Az útvonal számítása folyamatban van';
 
 List<Node> nodes = [];
 List<Node> pathNodes = [];
+List<Products> pathOrderNodes = [];
 
 void generate(BuildContext context) {
   double w = MediaQuery.of(context).size.width;
@@ -87,7 +88,6 @@ class Navigation extends StatefulWidget {
   Navigation(this.wishList) {
     wishList = wishList;
     totalnodes = wishList.length;
-    print(totalnodes);
   }
 
   @override
@@ -152,7 +152,6 @@ class _NavigationState extends State<Navigation> {
     totalnodes = widget.wishList.length + 2;
     visibility();
     floydWarshall(d_matrix);
-    pathNodes.add(nodes[startNode]);
     for (var i = 0; i < widget.wishList.length; i++) {
       for (var j = 0; j < nodes.length; j++) {
         if (widget.wishList[i].id == nodes[j].id) {
@@ -160,7 +159,6 @@ class _NavigationState extends State<Navigation> {
         }
       }
     }
-    pathNodes.add(nodes[endNode]);
     for (int i = 0; i < widget.wishList.length; i++) {
       order.add(widget.wishList[i].id);
     }
@@ -298,6 +296,19 @@ class _NavigationState extends State<Navigation> {
           print(road.value);
           roadFlow = road;
         });
+        for (var i = 0; i < road.value.length; i++) {
+          for (var j = 0; j < order.length; j++) {
+            if (order[j] == road.value[i]) {
+              for (var k = 0; k < widget.wishList.length; k++) {
+                if (widget.wishList[k].id == order[j] && !pathOrderNodes.contains(widget.wishList[k])) {
+                  pathOrderNodes.add(widget.wishList[k]);
+                  break;
+                }
+              }
+              break;
+            }
+          }
+        }
       }
     });
   }
@@ -312,6 +323,7 @@ class _NavigationState extends State<Navigation> {
   Widget build(BuildContext context) {
     if (nodes.isEmpty) {
       generate(context);
+      visibility();
     }
     return Scaffold(
       appBar: AppBar(title: Text(done), actions: <Widget>[
@@ -335,7 +347,7 @@ class _NavigationState extends State<Navigation> {
                 useSafeArea: false,
                 curve: Curves.easeIn,
                 previewWidget: previewWidget(context),
-                expandedWidget: expandedWidget(),
+                expandedWidget: expandedWidget(pathOrderNodes),
                 backgroundWidget: Container(),
                 duration: const Duration(milliseconds: 10),
                 maxExtent: MediaQuery.of(context).size.height * 0.8,
@@ -410,7 +422,7 @@ class Element extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.06,
-      height: MediaQuery.of(context).size.width * 0.1,
+      height: MediaQuery.of(context).size.width * 0.06,
       decoration: BoxDecoration(
         color: visible ? Colors.amber : const Color.fromARGB(32, 0, 0, 0),
         shape: BoxShape.circle,
@@ -438,7 +450,7 @@ class ArrowPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round
-      ..strokeWidth = 3.0;
+      ..strokeWidth = 5.0;
     {
       Path arrow = Path();
       arrow.moveTo(nodes[path[0]].x, nodes[path[0]].y);
@@ -447,18 +459,20 @@ class ArrowPainter extends CustomPainter {
         for (var j = 0; j < nodes.length; j++) {
           if (path[i] == nodes[j].id) {
             arrow.lineTo(nodes[j].x, nodes[j].y);
+            if (i % 2 == 0) {
+              arrow = ArrowPath.make(path: arrow);
+            }
             break;
           }
         }
         // for (var m = 0; m < pathNodes.length; m++) {
         //   if (road.value[i] == pathNodes[m].id) {
-        //     arrow = ArrowPath.make(path: arrow);
         //   }
         // }
       }
-      arrow = ArrowPath.make(path: arrow);
+      // arrow = ArrowPath.make(path: arrow);
 
-      canvas.drawPath(arrow, paint..color = Color.fromARGB(255, 0, 0, 0));
+      canvas.drawPath(arrow, paint..color = Colors.green);
     }
   }
 
