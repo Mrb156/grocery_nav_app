@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:arrow_path/arrow_path.dart';
+import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_nav_app/models/models.dart';
 import 'package:grocery_nav_app/pathFindingAlgorithm/pathFinding.dart';
 import 'dart:math';
 
-import 'package:transparent_pointer/transparent_pointer.dart';
+import 'package:grocery_nav_app/shared/modal_bottom_sheet.dart';
 
 const double infinity = 1.0 / 0.0;
 int totalnodes = 0;
@@ -311,25 +312,33 @@ class _NavigationState extends State<Navigation> {
     setup();
     return Scaffold(
       appBar: AppBar(title: Text(done), actions: <Widget>[
-        Padding(
+        const Padding(
             padding: const EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () {
-                ossz();
-              },
-              child: const Icon(
-                Icons.search,
-                size: 26.0,
-              ),
+            child: const Icon(
+              Icons.search,
+              size: 26.0,
             )),
       ]),
       body: ValueListenableBuilder(
         valueListenable: roadFlow,
         builder: (context, List<int> road, child) {
-          return InteractiveViewer(
-            child: Grid(
-              road: road,
-            ),
+          return Stack(
+            children: [
+              Grid(
+                road: road,
+              ),
+              DraggableBottomSheet(
+                minExtent: 50,
+                useSafeArea: false,
+                curve: Curves.easeIn,
+                previewWidget: previewWidget(context),
+                expandedWidget: expandedWidget(),
+                backgroundWidget: Container(),
+                duration: const Duration(milliseconds: 10),
+                maxExtent: MediaQuery.of(context).size.height * 0.8,
+                onDragging: (pos) {},
+              ),
+            ],
           );
         },
       ),
@@ -346,42 +355,45 @@ class Grid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/images/floor.jpg"),
-                  fit: BoxFit.fitWidth),
+    return InteractiveViewer(
+      child: Stack(
+        children: [
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(
+                        "assets/images/floor.jpg"),
+                    fit: BoxFit.fitWidth),
+              ),
             ),
           ),
-        ),
-        GestureDetector(
-          child: CustomPaint(
-            size: Size(MediaQuery.of(context).size.width,
-                MediaQuery.of(context).size.height),
-            painter: ArrowPainter(
-              path: road,
+          GestureDetector(
+            child: CustomPaint(
+              size: Size(MediaQuery.of(context).size.width,
+                  MediaQuery.of(context).size.height),
+              painter: ArrowPainter(
+                path: road,
+              ),
             ),
           ),
-        ),
-        Stack(
-          children: List.generate(
-            nodes.length,
-            (index) {
-              return Transform.translate(
-                offset: Offset(nodes[index].x, nodes[index].y),
-                child: Element(
-                  id: nodes[index].id,
-                  visible: nodes[index].visible,
-                ),
-              );
-            },
+          Stack(
+            children: List.generate(
+              nodes.length,
+              (index) {
+                return Transform.translate(
+                  offset: Offset(nodes[index].x, nodes[index].y),
+                  child: Element(
+                    id: nodes[index].id,
+                    visible: nodes[index].visible,
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
