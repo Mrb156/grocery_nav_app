@@ -14,7 +14,7 @@ int totalnodes = 0;
 var recordDistance = infinity;
 ValueNotifier<List<int>> road = ValueNotifier<List<int>>([]);
 ValueNotifier<List<int>> roadFlow = ValueNotifier<List<int>>([]);
-String done = 'Navigation - Az útvonal számítása folyamatban van';
+String done = 'Az útvonal számítása folyamatban van';
 
 List<Node> nodes = [];
 List<Node> pathNodes = [];
@@ -292,15 +292,16 @@ class _NavigationState extends State<Navigation> {
         road.value = List.from(road2);
         timer?.cancel();
         setState(() {
-          done = 'Navigation - Kész!';
-          print(road.value);
+          done = 'Elkészült az útvonal!';
+          //print(road.value);
           roadFlow = road;
         });
         for (var i = 0; i < road.value.length; i++) {
           for (var j = 0; j < order.length; j++) {
             if (order[j] == road.value[i]) {
               for (var k = 0; k < widget.wishList.length; k++) {
-                if (widget.wishList[k].id == order[j] && !pathOrderNodes.contains(widget.wishList[k])) {
+                if (widget.wishList[k].id == order[j] &&
+                    !pathOrderNodes.contains(widget.wishList[k])) {
                   pathOrderNodes.add(widget.wishList[k]);
                   break;
                 }
@@ -326,31 +327,43 @@ class _NavigationState extends State<Navigation> {
       visibility();
     }
     return Scaffold(
-      appBar: AppBar(title: Text(done), actions: <Widget>[
-        const Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: const Icon(
-              Icons.search,
-              size: 26.0,
-            )),
-      ]),
+      appBar: AppBar(title: const Text("Útvonal"),backgroundColor: Colors.amber,),
       body: ValueListenableBuilder(
         valueListenable: roadFlow,
         builder: (context, List<int> road, child) {
           return Stack(
             children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.01),
+                    child: Text(
+                      done,
+                      style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.center,
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                      border: Border.all(),
+                      color: Color.fromARGB(122, 255, 193, 7),
+                      borderRadius: BorderRadius.circular(
+                          MediaQuery.of(context).size.height * 0.01)),
+                ),
+              ),
               Grid(
                 road: road,
               ),
+              ////////////////TODO: valamiért a lehúzásnál nem világosítja ki a hátteret
               DraggableBottomSheet(
-                minExtent: MediaQuery.of(context).size.height*0.08,
-                expansionExtent: MediaQuery.of(context).size.height*0.06,
-                maxExtent: MediaQuery.of(context).size.height*0.9,
+                minExtent: MediaQuery.of(context).size.height * 0.08,
+                expansionExtent: MediaQuery.of(context).size.height * 0.06,
+                maxExtent: MediaQuery.of(context).size.height * 0.9,
                 useSafeArea: false,
                 curve: Curves.easeIn,
                 previewWidget: previewWidget(context),
                 expandedWidget: expandedWidget(pathOrderNodes),
-                backgroundWidget: Container(),
+                backgroundWidget: Container(color: Colors.transparent,),
                 duration: const Duration(milliseconds: 10),
                 onDragging: (pos) {},
               ),

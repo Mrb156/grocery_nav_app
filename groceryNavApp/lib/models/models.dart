@@ -16,11 +16,13 @@ class Products {
   int price;
   String name;
   int db;
+  bool checked;
   Products(
       {required this.id,
       required this.price,
       required this.name,
-      required this.db});
+      required this.db,
+      required this.checked});
 }
 
 class Data {

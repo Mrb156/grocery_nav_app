@@ -22,8 +22,14 @@ void decrement(int szam) {
   }
 }
 
-void save(int prc, int db, String product, int id) {
-  savedList.add(Products(db: db, name: product, price: prc, id: id));
+void save(int prc, int db, String product, int id, bool checked) {
+  savedList.add(
+      Products(db: db, name: product, price: prc, id: id, checked: checked));
+}
+
+void remove(int prc, int db, String product, int id, bool checked) {
+  savedList.remove(
+      Products(db: db, name: product, price: prc, id: id, checked: checked));
 }
 
 void increment(int szam) {
@@ -32,8 +38,6 @@ void increment(int szam) {
 
 void check() {
   for (var i = 0; i < termekek.length; i++) {
-    userChecked.add(false);
-    db.add(0);
     preOsszeg.add(0);
   }
 }
@@ -86,7 +90,8 @@ class _ListaState extends State<Lista> {
                     id: prod[i].get("szektor"),
                     name: prod[i].get("name"),
                     price: prod[i].get("price"),
-                    db: prod[i].get("db")));
+                    db: prod[i].get("db"),
+                    checked: false));
               }
             }
             check();
@@ -104,7 +109,8 @@ class _ListaState extends State<Lista> {
                     id: prod[i].get("id"),
                     name: prod[i].get("name"),
                     price: prod[i].get("price"),
-                    db: prod[i].get("db")));
+                    db: prod[i].get("db"),
+                    checked: false));
               }
               check();
             }
@@ -150,22 +156,36 @@ class _ListaState extends State<Lista> {
                 itemBuilder: (BuildContext context, int index) {
                   return ExpansionTileCard(
                     initialPadding: EdgeInsets.all(12.0),
+                    initialElevation:
+                        MediaQuery.of(context).size.height * 0.004,
                     expandedColor: Colors.amber,
                     expandedTextColor: Colors.black87,
-                    baseColor: Colors.amber,
+                    // baseColor: Color.fromARGB(255, 255, 255, 255),
                     subtitle: Text(filtered[index].price.toString() + ' Ft'),
                     trailing: Checkbox(
-                        value: userChecked[index],
+                        value: filtered[index].checked,
                         onChanged: (bool? value) {
                           setState(() {
-                            userChecked[index] = value!;
-                            if (userChecked[index] == true) {
-                              termekek[index].db = 1;
-                              osszeg = osszeg + termekek[index].price * 1;
-                              preOsszeg[index] = termekek[index].price * 1;
-                            } else if (userChecked[index] == false) {
-                              termekek[index].db = 0;
+                            filtered[index].checked = value!;
+                            if (filtered[index].checked == true) {
+                              filtered[index].db = 1;
+                              osszeg = osszeg + filtered[index].price * 1;
+                              preOsszeg[index] = filtered[index].price * 1;
+                              save(
+                                  filtered[index].price,
+                                  filtered[index].db,
+                                  filtered[index].name,
+                                  filtered[index].id,
+                                  filtered[index].checked);
+                            } else if (filtered[index].checked == false) {
+                              filtered[index].db = 0;
                               osszeg = osszeg - preOsszeg[index];
+                              remove(
+                                  filtered[index].price,
+                                  filtered[index].db,
+                                  filtered[index].name,
+                                  filtered[index].id,
+                                  filtered[index].checked);
                             }
                           });
                         }),
@@ -177,33 +197,33 @@ class _ListaState extends State<Lista> {
                           ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  if (termekek[index].db <= 0) {
+                                  if (filtered[index].db <= 0) {
                                   } else {
-                                    termekek[index].db--;
-                                    osszeg = osszeg - termekek[index].price;
+                                    filtered[index].db--;
+                                    osszeg = osszeg - filtered[index].price;
                                   }
-                                  if (termekek[index].db == 0) {
-                                    userChecked[index] = false;
+                                  if (filtered[index].db == 0) {
+                                    filtered[index].checked = false;
                                   }
                                 });
                               },
                               child: const Icon(Icons.remove)),
                           Text(
-                            termekek[index].db.toString(),
+                            filtered[index].db.toString(),
                             style: const TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
                           ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  termekek[index].db++;
-                                  if (termekek[index].db > 0) {
-                                    userChecked[index] = true;
+                                  filtered[index].db++;
+                                  if (filtered[index].db > 0) {
+                                    filtered[index].checked = true;
                                   }
 
-                                  osszeg = osszeg + termekek[index].price;
-                                  preOsszeg[index] = termekek[index].price *
-                                      termekek[index].db;
+                                  osszeg = osszeg + filtered[index].price;
+                                  preOsszeg[index] = filtered[index].price *
+                                      filtered[index].db;
                                 });
                               },
                               child: const Icon(Icons.add)),
@@ -216,18 +236,19 @@ class _ListaState extends State<Lista> {
               floatingActionButton: FloatingActionButton(
                 child: const Icon(Icons.arrow_forward),
                 onPressed: () {
-                  if (savedList.isNotEmpty) {
-                    int hossz = savedList.length;
-                    for (int i = 0; i < hossz; i++) {
-                      savedList.removeLast();
-                    }
-                  }
-                  for (int i = 0; i < termekek.length; i++) {
-                    if (userChecked[i] == true) {
-                      save(termekek[i].price, termekek[i].db, termekek[i].name,
-                          termekek[i].id);
-                    }
-                  }
+                  print(savedList[0].price);
+                  // if (savedList.isNotEmpty) {
+                  //   int hossz = savedList.length;
+                  //   for (int i = 0; i < hossz; i++) {
+                  //     savedList.removeLast();
+                  //   }
+                  // }
+                  // for (int i = 0; i < filtered.length; i++) {
+                  //   if (filtered[i].checked == true) {
+                  //     save(filtered[i].price, filtered[i].db, filtered[i].name,
+                  //         filtered[i].id, filtered[i].checked);
+                  //   }
+                  // }
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -236,14 +257,20 @@ class _ListaState extends State<Lista> {
               ),
               bottomNavigationBar: BottomAppBar(
                   color: Colors.amber,
-                  child: Text(
-                    'Végösszeg: ' + osszeg.toString() + 'Ft',
-                    textAlign: TextAlign.center,
+                  child: Padding(
+                    padding: EdgeInsets.all(
+                        MediaQuery.of(context).size.height * 0.01),
+                    child: Text(
+                      'Végösszeg: ' + osszeg.toString() + 'Ft',
+                      textAlign: TextAlign.center,
+                    ),
                   )),
             );
           } else {
-            return Center(
-              child: CircularProgressIndicator(),
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
         });
