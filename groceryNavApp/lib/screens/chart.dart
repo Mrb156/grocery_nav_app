@@ -54,22 +54,6 @@ class _ChartState extends State<Chart> {
         foregroundColor: Colors.black,
         backgroundColor: baseColor,
         title: const Text('Összegzés'),
-        actions: <Widget>[
-          IconButton(
-            onPressed: (() {
-              szamlalo++;
-            }),
-            icon: const Icon(Icons.save),
-            color: Colors.black,
-          ),
-          IconButton(
-            onPressed: (() {
-              szamlalo++;
-            }),
-            icon: const Icon(Icons.file_open),
-            color: Colors.black,
-          )
-        ],
       ),
       body: Column(
         children: [

@@ -23,8 +23,11 @@ void decrement(int szam) {
 }
 
 void save(int prc, int db, String product, int id, bool checked) {
-  savedList.add(
-      Products(db: db, name: product, price: prc, id: id, checked: checked));
+  if (!savedList.contains(
+      Products(db: db, name: product, price: prc, id: id, checked: checked))) {
+    savedList.add(
+        Products(db: db, name: product, price: prc, id: id, checked: checked));
+  }
 }
 
 void remove(int prc, int db, String product, int id, bool checked) {
@@ -121,34 +124,19 @@ class _ListaState extends State<Lista> {
                 title: SizedBox(
                   height: 40,
                   child: TextField(
+                    autofocus: false,
                     controller: _searchController,
                     onChanged: (value) => _runfilter(value),
                     decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.amber[100],
-                        prefixIcon: Icon(Icons.search),
+                        prefixIcon: const Icon(Icons.search),
                         hintText: 'Search',
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide.none)),
                   ),
                 ),
-                actions: <Widget>[
-                  IconButton(
-                    onPressed: (() {
-                      szamlalo++;
-                    }),
-                    icon: const Icon(Icons.save),
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    onPressed: (() {
-                      szamlalo++;
-                    }),
-                    icon: const Icon(Icons.file_open),
-                    color: Colors.black,
-                  )
-                ],
               ),
               body: ListView.builder(
                 padding: const EdgeInsets.only(bottom: 56, top: 40),
@@ -236,7 +224,6 @@ class _ListaState extends State<Lista> {
               floatingActionButton: FloatingActionButton(
                 child: const Icon(Icons.arrow_forward),
                 onPressed: () {
-                  print(savedList[0].price);
                   // if (savedList.isNotEmpty) {
                   //   int hossz = savedList.length;
                   //   for (int i = 0; i < hossz; i++) {
@@ -249,10 +236,28 @@ class _ListaState extends State<Lista> {
                   //         filtered[i].id, filtered[i].checked);
                   //   }
                   // }
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => Chart(savedList))));
+                  if (!savedList.isEmpty) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => Chart(savedList))));
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: ((context) {
+                          return AlertDialog(
+                            title: const Text("Üres a bevásárlólistád!"),
+                            content: const Text(
+                                "Addig nem tudsz továbblépni, ameddig nem adtál hozzás emmit a listádhoz."),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'OK'),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        }));
+                  }
                 },
               ),
               bottomNavigationBar: BottomAppBar(
