@@ -6,8 +6,6 @@ import 'package:grocery_nav_app/models/models.dart';
 import 'package:grocery_nav_app/screens/nav.dart';
 
 class Chart extends StatefulWidget {
-  //Chart({super.key});
-
   List<Products> sList = [];
   Chart(this.sList);
 
@@ -33,7 +31,7 @@ class _ChartState extends State<Chart> {
   }
 
   int szamlalo = 0;
-////////////////////////TODO: a mennyiséget nem veszi át helyesen
+
   @override
   Widget build(BuildContext context) {
     calculate();
@@ -55,93 +53,77 @@ class _ChartState extends State<Chart> {
         backgroundColor: baseColor,
         title: const Text('Összegzés'),
       ),
-      body: Column(
-        children: [
-          SingleChildScrollView(
-            child: Container(
-              height: 500,
-              padding: const EdgeInsets.all(4.0),
-              margin: const EdgeInsets.all(5.0),
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: widget.sList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ExpansionTileCard(
-                      initialPadding: EdgeInsets.all(12.0),
-                      initialElevation:
-                          MediaQuery.of(context).size.height * 0.004,
-                      expandedColor: Colors.amber,
-                      expandedTextColor: Colors.black87,
-                      // baseColor: Color.fromARGB(255, 255, 255, 255),
-                      subtitle:
-                          Text(widget.sList[index].price.toString() + ' Ft'),
-                      trailing: Checkbox(
-                          value: widget.sList[index].checked,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              widget.sList[index].checked = value!;
-                              if (widget.sList[index].checked == true) {
-                                widget.sList[index].db = 1;
-                                ossz = ossz + widget.sList[index].price * 1;
-                                preosszeg[index] =
-                                    widget.sList[index].price * 1;
-                              } else if (widget.sList[index].checked == false) {
-                                widget.sList[index].db = 0;
-                                ossz = ossz - preosszeg[index];
-                              }
-                            });
-                            calculate();
-                          }),
-                      title: Text(widget.sList[index].name),
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if (widget.sList[index].db <= 0) {
-                                    } else {
-                                      widget.sList[index].db--;
-                                      ossz = ossz - widget.sList[index].price;
-                                    }
-                                    if (widget.sList[index].db == 0) {
-                                      widget.sList[index].checked = false;
-                                    }
-                                  });
-                                  calculate();
-                                },
-                                child: const Icon(Icons.remove)),
-                            Text(
-                              widget.sList[index].db.toString(),
-                              style: const TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold),
-                            ),
-                            ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    widget.sList[index].db++;
-                                    if (widget.sList[index].db > 0) {
-                                      widget.sList[index].checked = true;
-                                    }
-
-                                    ossz = ossz + widget.sList[index].price;
-                                    preosszeg[index] =
-                                        widget.sList[index].price *
-                                            widget.sList[index].db;
-                                  });
-                                  calculate();
-                                },
-                                child: const Icon(Icons.add)),
-                          ],
-                        )
-                      ],
-                    );
+      body: ListView.builder(
+          shrinkWrap: true,
+          itemCount: widget.sList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ExpansionTileCard(
+              initialPadding: EdgeInsets.all(12.0),
+              initialElevation: MediaQuery.of(context).size.height * 0.004,
+              expandedColor: Colors.amber,
+              expandedTextColor: Colors.black87,
+              subtitle: Text(widget.sList[index].price.toString() + ' Ft'),
+              trailing: Checkbox(
+                  value: widget.sList[index].checked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      widget.sList[index].checked = value!;
+                      if (widget.sList[index].checked == true) {
+                        widget.sList[index].db = 1;
+                        ossz = ossz + widget.sList[index].price * 1;
+                        preosszeg[index] = widget.sList[index].price * 1;
+                      } else if (widget.sList[index].checked == false) {
+                        widget.sList[index].db = 0;
+                        ossz = ossz - preosszeg[index];
+                      }
+                    });
+                    calculate();
                   }),
-            ),
-          ),
-        ],
-      ),
+              title: Text(widget.sList[index].name),
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            if (widget.sList[index].db <= 0) {
+                            } else {
+                              widget.sList[index].db--;
+                              ossz = ossz - widget.sList[index].price;
+                            }
+                            if (widget.sList[index].db == 0) {
+                              widget.sList[index].checked = false;
+                            }
+                          });
+                          calculate();
+                        },
+                        child: const Icon(Icons.remove)),
+                    Text(
+                      widget.sList[index].db.toString(),
+                      style: const TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            widget.sList[index].db++;
+                            if (widget.sList[index].db > 0) {
+                              widget.sList[index].checked = true;
+                            }
+
+                            ossz = ossz + widget.sList[index].price;
+                            preosszeg[index] = widget.sList[index].price *
+                                widget.sList[index].db;
+                          });
+                          calculate();
+                        },
+                        child: const Icon(Icons.add)),
+                  ],
+                )
+              ],
+            );
+          }),
       floatingActionButton: FloatingActionButton(
           backgroundColor: baseColor,
           child: const Icon(Icons.arrow_forward),
@@ -153,10 +135,11 @@ class _ChartState extends State<Chart> {
               }
             }
             if (!passedList.isEmpty) {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: ((context) => Navigation(passedList))));
+              widget.sList.clear();
             } else {
               showDialog(
                   context: context,

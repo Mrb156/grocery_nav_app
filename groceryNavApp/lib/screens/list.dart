@@ -16,28 +16,6 @@ List<Products> savedList = [];
 String searchText = '';
 TextEditingController _searchController = TextEditingController();
 
-void decrement(int szam) {
-  if (szam > 0) {
-    szam = szam - 1;
-  }
-}
-
-void save(int prc, int db, String product, int id, bool checked) {
-  if (!savedList.contains(
-      Products(db: db, name: product, price: prc, id: id, checked: checked))) {
-    savedList.add(
-        Products(db: db, name: product, price: prc, id: id, checked: checked));
-  }
-}
-
-void remove(int prc, int db, String product, int id, bool checked) {
-  savedList.remove(
-      Products(db: db, name: product, price: prc, id: id, checked: checked));
-}
-
-void increment(int szam) {
-  szam = szam + 1;
-}
 
 void check() {
   for (var i = 0; i < termekek.length; i++) {
@@ -60,6 +38,11 @@ class _ListaState extends State<Lista> {
   @override
   void initState() {
     filtered = termekek;
+    savedList.clear();
+    for (var i = 0; i < filtered.length; i++) {
+      filtered[i].checked = false;
+      termekek[i].checked = false;
+    }
     super.initState();
   }
 
@@ -94,7 +77,8 @@ class _ListaState extends State<Lista> {
                     name: prod[i].get("name"),
                     price: prod[i].get("price"),
                     db: prod[i].get("db"),
-                    checked: false));
+                    checked: false,
+                    shelf: prod[i].get("polc")));
               }
             }
             check();
@@ -113,12 +97,14 @@ class _ListaState extends State<Lista> {
                     name: prod[i].get("name"),
                     price: prod[i].get("price"),
                     db: prod[i].get("db"),
-                    checked: false));
+                    checked: false,
+                    shelf: prod[i].get("polc")));
               }
               check();
             }
             return Scaffold(
               appBar: AppBar(
+                automaticallyImplyLeading: false,
                 foregroundColor: Colors.black,
                 backgroundColor: Colors.amber,
                 title: SizedBox(
@@ -148,7 +134,6 @@ class _ListaState extends State<Lista> {
                         MediaQuery.of(context).size.height * 0.004,
                     expandedColor: Colors.amber,
                     expandedTextColor: Colors.black87,
-                    // baseColor: Color.fromARGB(255, 255, 255, 255),
                     subtitle: Text(filtered[index].price.toString() + ' Ft'),
                     trailing: Checkbox(
                         value: filtered[index].checked,
@@ -159,21 +144,9 @@ class _ListaState extends State<Lista> {
                               filtered[index].db = 1;
                               osszeg = osszeg + filtered[index].price * 1;
                               preOsszeg[index] = filtered[index].price * 1;
-                              save(
-                                  filtered[index].price,
-                                  filtered[index].db,
-                                  filtered[index].name,
-                                  filtered[index].id,
-                                  filtered[index].checked);
                             } else if (filtered[index].checked == false) {
                               filtered[index].db = 0;
                               osszeg = osszeg - preOsszeg[index];
-                              remove(
-                                  filtered[index].price,
-                                  filtered[index].db,
-                                  filtered[index].name,
-                                  filtered[index].id,
-                                  filtered[index].checked);
                             }
                           });
                         }),
@@ -224,23 +197,17 @@ class _ListaState extends State<Lista> {
               floatingActionButton: FloatingActionButton(
                 child: const Icon(Icons.arrow_forward),
                 onPressed: () {
-                  // if (savedList.isNotEmpty) {
-                  //   int hossz = savedList.length;
-                  //   for (int i = 0; i < hossz; i++) {
-                  //     savedList.removeLast();
-                  //   }
-                  // }
-                  // for (int i = 0; i < filtered.length; i++) {
-                  //   if (filtered[i].checked == true) {
-                  //     save(filtered[i].price, filtered[i].db, filtered[i].name,
-                  //         filtered[i].id, filtered[i].checked);
-                  //   }
-                  // }
-                  if (!savedList.isEmpty) {
+                  List<Products> passing = [];
+                  for (var i = 0; i < filtered.length; i++) {
+                    if (filtered[i].checked) {
+                      passing.add(filtered[i]);
+                    }
+                  }
+                  if (!passing.isEmpty) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) => Chart(savedList))));
+                            builder: ((context) => Chart(passing))));
                   } else {
                     showDialog(
                         context: context,
@@ -248,7 +215,7 @@ class _ListaState extends State<Lista> {
                           return AlertDialog(
                             title: const Text("Üres a bevásárlólistád!"),
                             content: const Text(
-                                "Addig nem tudsz továbblépni, ameddig nem adtál hozzás emmit a listádhoz."),
+                                "Addig nem tudsz továbblépni, ameddig nem adtál hozzá semmit a listádhoz."),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context, 'OK'),

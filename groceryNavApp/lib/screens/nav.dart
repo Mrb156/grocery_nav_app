@@ -1,23 +1,24 @@
 import 'dart:async';
-
 import 'package:arrow_path/arrow_path.dart';
-import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_nav_app/models/models.dart';
 import 'package:grocery_nav_app/pathFindingAlgorithm/pathFinding.dart';
+import 'package:grocery_nav_app/screens/list.dart';
 import 'dart:math';
-
-import 'package:grocery_nav_app/shared/modal_bottom_sheet.dart';
+import 'package:grocery_nav_app/pathFindingAlgorithm/dijkstra.dart';
 
 const double infinity = 1.0 / 0.0;
 int totalnodes = 0;
 var recordDistance = infinity;
+//az eddigi legjobb útvonalat tároló lista
 ValueNotifier<List<int>> road = ValueNotifier<List<int>>([]);
+//minden adott útvonalat tároló lista
 ValueNotifier<List<int>> roadFlow = ValueNotifier<List<int>>([]);
 String done = 'Az útvonal számítása folyamatban van';
 
 List<Node> nodes = [];
 List<Node> pathNodes = [];
+//a termékeket tároló lista az útvonal sorrendjében
 List<Products> pathOrderNodes = [];
 
 void generate(BuildContext context) {
@@ -97,18 +98,27 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   bool showArrows = true;
   var random = Random();
+  //kezdő pont
   int startNode = 0;
+  //végpont
   int endNode = 44;
-
+  //populáció max mérete
   int popTotal = (99 / (1 / totalnodes) / 10).floor();
+  //számláló, ami leállítja a számítást
   int counter = 0;
+  //számláló max értéke
   int counterNumber = 10000;
+  //populációt tároló mátrix
   List<List<int>> population = [];
+  //a pontok sorrendját tároló lista
   List<int> order = [];
+  //a fitness értékeket tároló lista
   List<double> fitness = [];
+  //a számláló leállításához egy másolat az útvonalról
   var roadTest = road.value;
-  int maxWait = (999 / (1 / totalnodes)).floor();
-  //int maxWait = 1000;
+  //távolságmátrix kiszámításához egy dummy mátrix
+  List<List<double>> d_matrix =
+      List.generate(45, (i) => List.generate(45, (j) => 0));
 
   void visibility() {
     for (var i = 0; i < widget.wishList.length; i++) {
@@ -120,9 +130,6 @@ class _NavigationState extends State<Navigation> {
       }
     }
   }
-
-  List<List<double>> d_matrix =
-      List.generate(45, (i) => List.generate(45, (j) => 0));
 
   void swap(a, i, j) {
     var temp = a[i];
@@ -163,7 +170,7 @@ class _NavigationState extends State<Navigation> {
       order.add(widget.wishList[i].id);
     }
 
-    // Create population
+    // populáció létrehozása
     for (int i = 0; i < popTotal; i++) {
       List<int> pop2 = [];
       population.add(order.toList());
@@ -175,13 +182,14 @@ class _NavigationState extends State<Navigation> {
       pop2.add(endNode);
       population[i] = pop2;
     }
-
+//kezdő fitness értékek
     for (var i = 0; i < population.length; i++) {
       double d = calcDistance(pathNodes, population[i]);
       if (d < recordDistance) {
         recordDistance = d;
         road.value = population[i];
         roadFlow.value = population[i];
+        print(road.value);
       }
       fitness.add(d);
     }
@@ -268,9 +276,11 @@ class _NavigationState extends State<Navigation> {
   }
 
   void ossz() {
-    calcFitness();
-    normalizeFitness();
-    nextGeneration();
+    //az iteráció lépései a megadott időközben
+    calcFitness(); //fitness értékek kiszámolása
+    normalizeFitness(); //fitness normalizáció
+    nextGeneration(); //következő generáció a populációban
+    //számláló beállítása, amennyiben talál még jobb megoldást, nullázódik
     if (roadTest == road.value) {
       counter++;
     } else {
@@ -284,16 +294,32 @@ class _NavigationState extends State<Navigation> {
   @override
   void initState() {
     super.initState();
+    pathOrderNodes = [];
+    nodes = [];
+    pathNodes = [];
+    startNode = 0;
+    endNode = 44;
+    population = [];
+    order = [];
+    fitness = [];
+    counter = 0;
+    roadTest = [];
+    d_matrix = List.generate(45, (i) => List.generate(45, (j) => 0));
+    road = ValueNotifier<List<int>>([]);
+    roadFlow = ValueNotifier<List<int>>([]);
+    done = 'Az útvonal számítása folyamatban van';
+    recordDistance = infinity;
     setup();
+    print(road.value);
     timer = Timer.periodic(const Duration(microseconds: 1), (Timer t) {
       ossz();
       if (counter >= counterNumber) {
+        //végső útvonal megadása minden érintendő ponttal
         var road2 = getFinalRoute(road.value);
         road.value = List.from(road2);
         timer?.cancel();
         setState(() {
           done = 'Elkészült az útvonal!';
-          //print(road.value);
           roadFlow = road;
         });
         for (var i = 0; i < road.value.length; i++) {
@@ -327,7 +353,21 @@ class _NavigationState extends State<Navigation> {
       visibility();
     }
     return Scaffold(
-      appBar: AppBar(title: const Text("Útvonal"),backgroundColor: Colors.amber,),
+      appBar: AppBar(
+        title: const Text("Útvonal"),
+        backgroundColor: Colors.amber,
+        leading: GestureDetector(
+          child: Icon(Icons.close),
+          onTap: () {
+            widget.wishList.clear();
+            Navigator.pop(context,
+                MaterialPageRoute(builder: (BuildContext context) {
+              return const Lista();
+            }));
+            droad = [];
+          },
+        ),
+      ),
       body: ValueListenableBuilder(
         valueListenable: roadFlow,
         builder: (context, List<int> road, child) {
@@ -338,10 +378,12 @@ class _NavigationState extends State<Navigation> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   child: Padding(
-                    padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.01),
+                    padding: EdgeInsets.all(
+                        MediaQuery.of(context).size.height * 0.01),
                     child: Text(
                       done,
-                      style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.center,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                   decoration: BoxDecoration(
@@ -354,18 +396,62 @@ class _NavigationState extends State<Navigation> {
               Grid(
                 road: road,
               ),
-              ////////////////TODO: valamiért a lehúzásnál nem világosítja ki a hátteret
-              DraggableBottomSheet(
-                minExtent: MediaQuery.of(context).size.height * 0.08,
-                expansionExtent: MediaQuery.of(context).size.height * 0.06,
-                maxExtent: MediaQuery.of(context).size.height * 0.9,
-                useSafeArea: false,
-                curve: Curves.easeIn,
-                previewWidget: previewWidget(context),
-                expandedWidget: expandedWidget(pathOrderNodes),
-                backgroundWidget: Container(color: Colors.transparent,),
-                duration: const Duration(milliseconds: 10),
-                onDragging: (pos) {},
+              DraggableScrollableSheet(
+                initialChildSize: 0.1,
+                minChildSize: 0.1,
+                maxChildSize: 0.9,
+                builder:
+                    (BuildContext context, ScrollController scrollController) {
+                  double padd = MediaQuery.of(context).size.width * 0.05;
+
+                  return Container(
+                    color: Colors.amber,
+                    child: ListView.builder(
+                        //physics: NeverScrollableScrollPhysics(),
+                        //shrinkWrap: true,
+                        controller: scrollController,
+                        itemCount: pathOrderNodes.length,
+                        itemBuilder: (context, index) {
+                          int productPlace = pathOrderNodes[index].id;
+                          String productName = pathOrderNodes[index].name;
+                          int productShelf = pathOrderNodes[index].shelf;
+
+                          return Card(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: padd, horizontal: padd * 0.04),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2),
+                                      child: Text(
+                                        "Lépés: ${index + 1}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(),
+                                        color: Color.fromARGB(122, 255, 193, 7),
+                                        borderRadius:
+                                            BorderRadius.circular(padd * 0.2)),
+                                  ),
+                                  Text("Szektor: $productPlace"),
+                                  Text("Polc száma: $productShelf"),
+                                  Text(
+                                    productName,
+                                    overflow: TextOverflow.visible,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+                  );
+                },
               ),
             ],
           );
@@ -476,16 +562,13 @@ class ArrowPainter extends CustomPainter {
             if (i % 2 == 0) {
               arrow = ArrowPath.make(path: arrow);
             }
+            if (i == path.length - 1) {
+              arrow = ArrowPath.make(path: arrow);
+            }
             break;
           }
         }
-        // for (var m = 0; m < pathNodes.length; m++) {
-        //   if (road.value[i] == pathNodes[m].id) {
-        //   }
-        // }
       }
-      // arrow = ArrowPath.make(path: arrow);
-
       canvas.drawPath(arrow, paint..color = Colors.green);
     }
   }
