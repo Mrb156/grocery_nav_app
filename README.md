@@ -1,12 +1,3 @@
 # Grocery Navigation Application
-Use case-ek:
-1. Termékek között keresés
-2. Termékek között szűrés
-3. Termékek bevásárlólistához adása/ elvétele
-4. Termékek mennyiségének beállítása
-5. Végleges ár kiírása
-6. Listából termék elvétele
-7. Útvonal generálása
-8. Termék levétele az útvonalról
-9. Termék hozzáadása menet közben az útvonalhoz?
-10.  Útvonal bezárása
+
+Projektünk egy mobil applikáció elkészítése volt, mellyel egy bolton belüli bevásárlást könnyítünk. Az applikációval összeállíthatunk egy bevásárlólistát egy adott boltban. Ez alapján pedig egy útvonaltervet készít nekünk a rendszert, amit követve optimálisan bejárhatjuk a boltot, érintve minden olyan helyet, ahol a megvásárolni kívánt tétel megtalálható.

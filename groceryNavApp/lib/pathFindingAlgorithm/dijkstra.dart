@@ -1,19 +1,19 @@
 const int NO_PARENT = -1;
-const int nV = 24;
-const double INF = 999;
+const int nV = 45;
+const double INF = 1.0 / 0.0;
 
-List<int> road = [];
+List<int> droad = [];
 
-void printPath(int currentVertex, List<int> parents) {
+void getPath(int currentVertex, List<int> parents) {
   if (currentVertex == NO_PARENT) {
     return;
   }
-  printPath(parents[currentVertex], parents);
-  road.add(currentVertex);
+  getPath(parents[currentVertex], parents);
+  droad.add(currentVertex);
 }
 
-void printSolution(List<int> parents, int vertexIndex) {
-  printPath(vertexIndex, parents);
+void getSolution(List<int> parents, int vertexIndex) {
+  getPath(vertexIndex, parents);
 }
 
 void dijkstra(
@@ -30,15 +30,12 @@ void dijkstra(
   }
 
   shortestDistances[startVertex] = 0;
-
-  //var parents = List.filled(nV, 0, growable: true);
   List<int> parents = [];
 
   for (int i = 0; i < nV; i++) {
     parents.add(i);
   }
 
-  // ignore: prefer_void_to_null
   parents[startVertex] = NO_PARENT;
 
   for (var i = 1; i < nVertices; i++) {
@@ -67,5 +64,5 @@ void dijkstra(
     }
   }
 
-  printSolution(parents, destination);
+  getSolution(parents, destination);
 }

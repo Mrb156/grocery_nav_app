@@ -5,22 +5,8 @@ import 'package:grocery_nav_app/models/models.dart';
 import 'package:grocery_nav_app/screens/chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-List<Products> termekek = [
-  // (Products(id: 1, price: 500, name: 'Tej 2,8%', db: 0)),
-  // (Products(id: 2, price: 1500, name: 'Sajt 700g', db: 0)),
-  // (Products(id: 3, price: 600, name: 'Coca Cola 2l', db: 0)),
-  // (Products(id: 4, price: 350, name: 'Margarin', db: 0)),
-  // (Products(id: 5, price: 120, name: 'Kifli', db: 0)),
-  // (Products(id: 6, price: 560, name: 'Szalámi', db: 0)),
-  // (Products(id: 7, price: 980, name: 'Sonka', db: 0)),
-  // (Products(id: 8, price: 660, name: 'Jégsaláta', db: 0)),
-  // (Products(id: 9, price: 200, name: 'Croissant', db: 0)),
-  // (Products(id: 10, price: 200, name: 'Sajtos pogácsa', db: 0)),
-  // (Products(id: 11, price: 570, name: 'Mizo Kakaó', db: 0)),
-  // (Products(id: 12, price: 810, name: 'WC papír', db: 0)),
-  // (Products(id: 13, price: 500, name: 'Tej 1,5%', db: 0))
-];
-
+List<Products> termekek = [];
+List<Products> filtered = [];
 List<bool> userChecked = [];
 List<int> db = [];
 int osszeg = 0;
@@ -30,24 +16,9 @@ List<Products> savedList = [];
 String searchText = '';
 TextEditingController _searchController = TextEditingController();
 
-void decrement(int szam) {
-  if (szam > 0) {
-    szam = szam - 1;
-  }
-}
-
-void save(int prc, int db, String product, int id) {
-  savedList.add(Products(db: db, name: product, price: prc, id: id));
-}
-
-void increment(int szam) {
-  szam = szam + 1;
-}
 
 void check() {
   for (var i = 0; i < termekek.length; i++) {
-    userChecked.add(false);
-    db.add(0);
     preOsszeg.add(0);
   }
 }
@@ -65,6 +36,33 @@ class _ListaState extends State<Lista> {
   List<DocumentSnapshot> prod = [];
 
   @override
+  void initState() {
+    filtered = termekek;
+    savedList.clear();
+    for (var i = 0; i < filtered.length; i++) {
+      filtered[i].checked = false;
+      termekek[i].checked = false;
+    }
+    super.initState();
+  }
+
+  void _runfilter(String keyword) {
+    List<Products> results = [];
+    if (keyword.isEmpty) {
+      results = termekek;
+    } else {
+      results = termekek
+          .where((termek) =>
+              termek.name.toLowerCase().contains(keyword.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      filtered = results;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         stream: products.snapshots(),
@@ -75,10 +73,12 @@ class _ListaState extends State<Lista> {
             if (termekek.isEmpty) {
               for (var i = 0; i < prod.length; i++) {
                 termekek.add(Products(
-                    id: prod[i].get("id"),
+                    id: prod[i].get("szektor"),
                     name: prod[i].get("name"),
                     price: prod[i].get("price"),
-                    db: prod[i].get("db")));
+                    db: prod[i].get("db"),
+                    checked: false,
+                    shelf: prod[i].get("polc")));
               }
             }
             check();
@@ -96,60 +96,61 @@ class _ListaState extends State<Lista> {
                     id: prod[i].get("id"),
                     name: prod[i].get("name"),
                     price: prod[i].get("price"),
-                    db: prod[i].get("db")));
+                    db: prod[i].get("db"),
+                    checked: false,
+                    shelf: prod[i].get("polc")));
               }
               check();
             }
             return Scaffold(
-              backgroundColor: Colors.blue[100],
               appBar: AppBar(
-                foregroundColor: Colors.amber[300],
-                shadowColor: Colors.blue,
-                backgroundColor: Colors.blue[300],
-                title: const Text('Lista'),
-                actions: <Widget>[
-                  IconButton(
-                    onPressed: (() {
-                      szamlalo++;
-                    }),
-                    icon: const Icon(Icons.save),
-                    color: Colors.amber[300],
+                automaticallyImplyLeading: false,
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.amber,
+                title: SizedBox(
+                  height: 40,
+                  child: TextField(
+                    autofocus: false,
+                    controller: _searchController,
+                    onChanged: (value) => _runfilter(value),
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.amber[100],
+                        prefixIcon: const Icon(Icons.search),
+                        hintText: 'Search',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide.none)),
                   ),
-                  IconButton(
-                    onPressed: (() {
-                      szamlalo++;
-                    }),
-                    icon: const Icon(Icons.file_open),
-                    color: Colors.amber[300],
-                  )
-                ],
+                ),
               ),
               body: ListView.builder(
-                padding: const EdgeInsets.only(bottom: 56),
-                itemCount: termekek.length,
+                padding: const EdgeInsets.only(bottom: 56, top: 40),
+                itemCount: filtered.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ExpansionTileCard(
                     initialPadding: EdgeInsets.all(12.0),
-                    expandedColor: Colors.amber[500],
+                    initialElevation:
+                        MediaQuery.of(context).size.height * 0.004,
+                    expandedColor: Colors.amber,
                     expandedTextColor: Colors.black87,
-                    baseColor: Colors.amber[300],
-                    subtitle: Text(termekek[index].price.toString() + ' Ft'),
+                    subtitle: Text(filtered[index].price.toString() + ' Ft'),
                     trailing: Checkbox(
-                        value: userChecked[index],
+                        value: filtered[index].checked,
                         onChanged: (bool? value) {
                           setState(() {
-                            userChecked[index] = value!;
-                            if (userChecked[index] == true) {
-                              termekek[index].db = 1;
-                              osszeg = osszeg + termekek[index].price * 1;
-                              preOsszeg[index] = termekek[index].price * 1;
-                            } else if (userChecked[index] == false) {
-                              termekek[index].db = 0;
+                            filtered[index].checked = value!;
+                            if (filtered[index].checked == true) {
+                              filtered[index].db = 1;
+                              osszeg = osszeg + filtered[index].price * 1;
+                              preOsszeg[index] = filtered[index].price * 1;
+                            } else if (filtered[index].checked == false) {
+                              filtered[index].db = 0;
                               osszeg = osszeg - preOsszeg[index];
                             }
                           });
                         }),
-                    title: Text(termekek[index].name),
+                    title: Text(filtered[index].name),
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -157,33 +158,33 @@ class _ListaState extends State<Lista> {
                           ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  if (termekek[index].db <= 0) {
+                                  if (filtered[index].db <= 0) {
                                   } else {
-                                    termekek[index].db--;
-                                    osszeg = osszeg - termekek[index].price;
+                                    filtered[index].db--;
+                                    osszeg = osszeg - filtered[index].price;
                                   }
-                                  if (termekek[index].db == 0) {
-                                    userChecked[index] = false;
+                                  if (filtered[index].db == 0) {
+                                    filtered[index].checked = false;
                                   }
                                 });
                               },
                               child: const Icon(Icons.remove)),
                           Text(
-                            termekek[index].db.toString(),
+                            filtered[index].db.toString(),
                             style: const TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
                           ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  termekek[index].db++;
-                                  if (termekek[index].db > 0) {
-                                    userChecked[index] = true;
+                                  filtered[index].db++;
+                                  if (filtered[index].db > 0) {
+                                    filtered[index].checked = true;
                                   }
 
-                                  osszeg = osszeg + termekek[index].price;
-                                  preOsszeg[index] = termekek[index].price *
-                                      termekek[index].db;
+                                  osszeg = osszeg + filtered[index].price;
+                                  preOsszeg[index] = filtered[index].price *
+                                      filtered[index].db;
                                 });
                               },
                               child: const Icon(Icons.add)),
@@ -196,28 +197,52 @@ class _ListaState extends State<Lista> {
               floatingActionButton: FloatingActionButton(
                 child: const Icon(Icons.arrow_forward),
                 onPressed: () {
-                  if (savedList.isNotEmpty) {
-                    int hossz = savedList.length;
-                    for (int i = 0; i < hossz; i++) {
-                      savedList.removeLast();
+                  List<Products> passing = [];
+                  for (var i = 0; i < filtered.length; i++) {
+                    if (filtered[i].checked) {
+                      passing.add(filtered[i]);
                     }
                   }
-                  for (int i = 0; i < termekek.length; i++) {
-                    if (userChecked[i] == true) {
-                      save(termekek[i].price, termekek[i].db, termekek[i].name,
-                          termekek[i].id);
-                    }
+                  if (!passing.isEmpty) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => Chart(passing))));
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: ((context) {
+                          return AlertDialog(
+                            title: const Text("Üres a bevásárlólistád!"),
+                            content: const Text(
+                                "Addig nem tudsz továbblépni, ameddig nem adtál hozzá semmit a listádhoz."),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'OK'),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        }));
                   }
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => Chart(savedList))));
                 },
               ),
+              bottomNavigationBar: BottomAppBar(
+                  color: Colors.amber,
+                  child: Padding(
+                    padding: EdgeInsets.all(
+                        MediaQuery.of(context).size.height * 0.01),
+                    child: Text(
+                      'Végösszeg: ' + osszeg.toString() + 'Ft',
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
             );
           } else {
-            return Center(
-              child: CircularProgressIndicator(),
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
         });
