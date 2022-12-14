@@ -26,61 +26,61 @@ void generate(BuildContext context) {
   double h = MediaQuery.of(context).size.height;
   //w->balról számol
   //h->h fentről számol
-  nodes.add(Node(x: w * 0.37, y: h * 0.65, id: 0));
+  nodes.add(Node(x: w * 0.37, y: h * 0.66, id: 0));
 
-  nodes.add(Node(x: w * 0.86, y: h * 0.475, id: 1));
-  nodes.add(Node(x: w * 0.86, y: h * 0.405, id: 2));
-  nodes.add(Node(x: w * 0.86, y: h * 0.325, id: 3));
-  nodes.add(Node(x: w * 0.86, y: h * 0.25, id: 4));
+  nodes.add(Node(x: w * 0.86, y: h * 0.485, id: 1));
+  nodes.add(Node(x: w * 0.86, y: h * 0.415, id: 2));
+  nodes.add(Node(x: w * 0.86, y: h * 0.345, id: 3));
+  nodes.add(Node(x: w * 0.86, y: h * 0.26, id: 4));
 
-  nodes.add(Node(x: w * 0.8, y: h * 0.19, id: 5));
-  nodes.add(Node(x: w * 0.65, y: h * 0.19, id: 6));
-  nodes.add(Node(x: w * 0.49, y: h * 0.19, id: 7));
-  nodes.add(Node(x: w * 0.33, y: h * 0.19, id: 8));
-  nodes.add(Node(x: w * 0.2, y: h * 0.19, id: 9));
+  nodes.add(Node(x: w * 0.8, y: h * 0.20, id: 5));
+  nodes.add(Node(x: w * 0.65, y: h * 0.20, id: 6));
+  nodes.add(Node(x: w * 0.49, y: h * 0.20, id: 7));
+  nodes.add(Node(x: w * 0.33, y: h * 0.20, id: 8));
+  nodes.add(Node(x: w * 0.2, y: h * 0.20, id: 9));
 
-  nodes.add(Node(x: w * 0.08, y: h * 0.22, id: 10));
-  nodes.add(Node(x: w * 0.08, y: h * 0.29, id: 11));
-  nodes.add(Node(x: w * 0.08, y: h * 0.37, id: 12));
-  nodes.add(Node(x: w * 0.08, y: h * 0.44, id: 13));
+  nodes.add(Node(x: w * 0.08, y: h * 0.23, id: 10));
+  nodes.add(Node(x: w * 0.08, y: h * 0.30, id: 11));
+  nodes.add(Node(x: w * 0.08, y: h * 0.38, id: 12));
+  nodes.add(Node(x: w * 0.08, y: h * 0.45, id: 13));
 
-  nodes.add(Node(x: w * 0.7, y: h * 0.42, id: 14));
-  nodes.add(Node(x: w * 0.7, y: h * 0.325, id: 15));
-  nodes.add(Node(x: w * 0.595, y: h * 0.325, id: 16));
-  nodes.add(Node(x: w * 0.595, y: h * 0.42, id: 17));
+  nodes.add(Node(x: w * 0.7, y: h * 0.43, id: 14));
+  nodes.add(Node(x: w * 0.7, y: h * 0.345, id: 15));
+  nodes.add(Node(x: w * 0.595, y: h * 0.345, id: 16));
+  nodes.add(Node(x: w * 0.595, y: h * 0.43, id: 17));
 
-  nodes.add(Node(x: w * 0.41, y: h * 0.5, id: 18));
-  nodes.add(Node(x: w * 0.41, y: h * 0.42, id: 19));
-  nodes.add(Node(x: w * 0.41, y: h * 0.325, id: 20));
-  nodes.add(Node(x: w * 0.315, y: h * 0.325, id: 21));
-  nodes.add(Node(x: w * 0.315, y: h * 0.42, id: 22));
-  nodes.add(Node(x: w * 0.315, y: h * 0.5, id: 23));
+  nodes.add(Node(x: w * 0.41, y: h * 0.51, id: 18));
+  nodes.add(Node(x: w * 0.41, y: h * 0.43, id: 19));
+  nodes.add(Node(x: w * 0.41, y: h * 0.345, id: 20));
+  nodes.add(Node(x: w * 0.315, y: h * 0.345, id: 21));
+  nodes.add(Node(x: w * 0.315, y: h * 0.43, id: 22));
+  nodes.add(Node(x: w * 0.315, y: h * 0.51, id: 23));
 
-  nodes.add(Node(x: w * 0.12, y: h * 0.565, id: 24));
-  nodes.add(Node(x: w * 0.12, y: h * 0.65, id: 25));
+  nodes.add(Node(x: w * 0.12, y: h * 0.575, id: 24));
+  nodes.add(Node(x: w * 0.12, y: h * 0.66, id: 25));
 
   //innentől a kösztes útvonal elemei vannak
-  nodes.add(Node(x: w * 0.37, y: h * 0.6, id: 26));
-  nodes.add(Node(x: w * 0.51, y: h * 0.6, id: 27));
-  nodes.add(Node(x: w * 0.51, y: h * 0.51, id: 28));
-  nodes.add(Node(x: w * 0.65, y: h * 0.51, id: 29));
+  nodes.add(Node(x: w * 0.37, y: h * 0.61, id: 26));
+  nodes.add(Node(x: w * 0.51, y: h * 0.61, id: 27));
+  nodes.add(Node(x: w * 0.51, y: h * 0.52, id: 28));
+  nodes.add(Node(x: w * 0.65, y: h * 0.52, id: 29));
 
-  nodes.add(Node(x: w * 0.775, y: h * 0.51, id: 30));
-  nodes.add(Node(x: w * 0.775, y: h * 0.44, id: 31));
-  nodes.add(Node(x: w * 0.775, y: h * 0.325, id: 32));
-  nodes.add(Node(x: w * 0.75, y: h * 0.24, id: 33));
-  nodes.add(Node(x: w * 0.65, y: h * 0.24, id: 34));
-  nodes.add(Node(x: w * 0.51, y: h * 0.24, id: 35));
-  nodes.add(Node(x: w * 0.51, y: h * 0.325, id: 36));
-  nodes.add(Node(x: w * 0.51, y: h * 0.42, id: 37));
-  nodes.add(Node(x: w * 0.36, y: h * 0.24, id: 38));
-  nodes.add(Node(x: w * 0.21, y: h * 0.24, id: 39));
-  nodes.add(Node(x: w * 0.21, y: h * 0.325, id: 40));
-  nodes.add(Node(x: w * 0.21, y: h * 0.42, id: 41));
-  nodes.add(Node(x: w * 0.21, y: h * 0.5, id: 42));
-  nodes.add(Node(x: w * 0.21, y: h * 0.6, id: 43));
+  nodes.add(Node(x: w * 0.775, y: h * 0.52, id: 30));
+  nodes.add(Node(x: w * 0.775, y: h * 0.45, id: 31));
+  nodes.add(Node(x: w * 0.775, y: h * 0.345, id: 32));
+  nodes.add(Node(x: w * 0.75, y: h * 0.26, id: 33));
+  nodes.add(Node(x: w * 0.65, y: h * 0.26, id: 34));
+  nodes.add(Node(x: w * 0.51, y: h * 0.26, id: 35));
+  nodes.add(Node(x: w * 0.51, y: h * 0.345, id: 36));
+  nodes.add(Node(x: w * 0.51, y: h * 0.43, id: 37));
+  nodes.add(Node(x: w * 0.36, y: h * 0.26, id: 38));
+  nodes.add(Node(x: w * 0.21, y: h * 0.26, id: 39));
+  nodes.add(Node(x: w * 0.21, y: h * 0.345, id: 40));
+  nodes.add(Node(x: w * 0.21, y: h * 0.43, id: 41));
+  nodes.add(Node(x: w * 0.21, y: h * 0.51, id: 42));
+  nodes.add(Node(x: w * 0.21, y: h * 0.61, id: 43));
 
-  nodes.add(Node(x: w * 0.774, y: h * 0.57, id: 44));
+  nodes.add(Node(x: w * 0.774, y: h * 0.58, id: 44));
 }
 
 class Navigation extends StatefulWidget {
@@ -479,7 +479,8 @@ class Grid extends StatelessWidget {
               decoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("assets/images/floor.jpg"),
-                    fit: BoxFit.fitWidth),
+                    fit: BoxFit.fitWidth,
+                    ),
               ),
             ),
           ),
